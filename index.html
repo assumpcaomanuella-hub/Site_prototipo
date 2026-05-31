@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="app.js"></script>
+
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h1>BuyFlow</h1>
+        </div>
+
+        <nav>
+
+            <button class="menu-item active" data-page="dashboard">
+                Dashboard
+            </button>
+
+            <button class="menu-item" data-page="inventario">
+                Inventário
+            </button>
+
+            <button class="menu-item" data-page="fornecedores">
+                Fornecedores
+            </button>
+
+            <button class="menu-item" data-page="relatorios">
+                Relatórios
+            </button>
+
+            <button class="menu-item" data-page="alertas">
+                Alertas
+            </button>
+
+            <button class="menu-item" data-page="ia">
+                IA BuyFlow
+            </button>
+
+            <button class="menu-item" data-page="configuracoes">
+                Configurações
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+
+    <main class="main-content">
+
+        <!-- TOPO -->
+
+        <header class="topbar">
+
+            <div class="user-area">
+
+                <span>Olá, gestora Manuella</span>
+
+                <button id="logoutBtn">
+                    Sair
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- DASHBOARD -->
+
+        <section id="dashboard" class="page active-page">
+
+            <h2>Dashboard</h2>
+
+            <div class="kpis">
+
+                <div class="card">
+                    <h3>Faturamento</h3>
+                    <p id="faturamento">124500</p>
+                </div>
+
+                <div class="card">
+                    <h3>Lucro</h3>
+                    <p id="lucro">107000</p>
+                </div>
+
+                <div class="card">
+                    <h3>Gastos</h3>
+                    <p id="gastos">86300</p>
+                </div>
+
+                <div class="card">
+                    <h3>Produtos</h3>
+                    <p id="totalProdutos">1</p>
+                </div>
+
+            </div>
+
+            <div class="charts">
+
+                <div class="chart-card">
+                    <canvas id="salesChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <canvas id="profitChart"></canvas>
+                </div>
+
+            </div>
+
+            <div class="critical-products">
+
+                <h3>Produtos Críticos</h3>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Camiseta Básica</td>
+                            <td>8</td>
+                            <td>Crítico</td>
+                        </tr>
+
+                        <tr>
+                            <td>Calça Jeans</td>
+                            <td>12</td>
+                            <td>Baixo</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="top-products">
+
+                <h3>Produtos Mais Vendidos</h3>
+
+                <table>
+
+                    <tr>
+                        <th>Produto</th>
+                        <th>Vendas</th>
+                    </tr>
+
+                    <tr>
+                        <td>Camiseta Oversized</td>
+                        <td>420</td>
+                    </tr>
+
+                    <tr>
+                        <td>Calça Jeans</td>
+                        <td>311</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <br>
+
+            <div class="chart-card">
+                <canvas id="lucroGastosChart"></canvas>
+            </div>
+
+        </section>
+
+        <!-- INVENTÁRIO -->
+
+        <section id="inventario" class="page">
+
+            <h2>Inventário</h2>
+
+            <div class="inventory-tools">
+
+                <input
+                    id="searchProduct"
+                    type="text"
+                    placeholder="Buscar produto..."
+                >
+
+                <button type="button" id="addProductButton">
+                    Novo Produto
+                </button>
+
+            </div>
+
+            <table id="inventoryTable">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inventoryBody">
+
+                    <tr>
+                        <td>001</td>
+                        <td>Camiseta Oversized</td>
+                        <td>Camisetas</td>
+                        <td>R$ 89</td>
+                        <td>35</td>
+                        <td>OK</td>
+
+                        <td>
+
+                            <button class="edit-btn">
+                                ✏️
+                            </button>
+
+                            <button class="delete-btn">
+                                🗑️
+                            </button>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div id="productModal" class="modal">
+
+                <div class="modal-content">
+
+                    <input
+                        type="hidden"
+                        id="editingRow">
+
+                    <h2 id="modalTitle">
+                        Novo Produto
+                    </h2>
+
+                    <button id="closeModal">
+                        ✖
+                    </button>
+
+                    <input
+                        id="productName"
+                        type="text"
+                        placeholder="Nome">
+
+                    <input
+                        id="productCategory"
+                        type="text"
+                        placeholder="Categoria">
+
+                    <input
+                        id="productPrice"
+                        type="number"
+                        placeholder="Preço">
+
+                    <input
+                        id="productStock"
+                        type="number"
+                        placeholder="Quantidade">
+
+                    <button id="saveProduct">
+                        Salvar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- FORNECEDORES -->
+
+        <section id="fornecedores" class="page">
+
+            <h2>Fornecedores</h2>
+
+            <div class="supplier-grid">
+
+                <div class="supplier-card">
+
+                    <h3>Tecidos Brasil</h3>
+
+                    <p>Entrega média: 4 dias</p>
+
+                    <p>Avaliação: ⭐⭐⭐⭐⭐</p>
+
+                </div>
+
+                <div class="supplier-card">
+
+                    <h3>Fashion Supply</h3>
+
+                    <p>Entrega média: 7 dias</p>
+
+                    <p>Avaliação: ⭐⭐⭐⭐</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- RELATÓRIOS -->
+
+        <section id="relatorios" class="page">
+
+            <h2>Relatórios</h2>
+
+            <div class="filters">
+
+                <button>Mensal</button>
+                <button>Trimestral</button>
+                <button>Anual</button>
+
+            </div>
+
+            <div class="chart-card">
+
+                <canvas id="reportChart"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- ALERTAS -->
+
+        <section id="alertas" class="page">
+
+            <h2>Alertas Inteligentes</h2>
+
+            <div class="alert-card">
+
+                <h3>Reposição Necessária</h3>
+
+                <p>
+                    Camiseta Básica está abaixo do estoque ideal.
+                </p>
+
+                <p>
+                    Sugestão: comprar +50 unidades.
+                </p>
+
+            </div>
+
+            <div class="alert-card">
+
+                <h3>Excesso de Estoque</h3>
+
+                <p>
+                    Jaqueta Premium possui baixo giro.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- IA -->
+
+        <section id="ia" class="page">
+
+            <h2>IA BuyFlow</h2>
+
+            <div class="ia-grid">
+
+                <div class="ia-card">
+
+                    <h3>⚠️ Reposição Necessária</h3>
+
+                    <p>
+                        Camiseta Básica acabará em 7 dias.
+                    </p>
+
+                    <strong>
+                        Comprar 50 unidades.
+                    </strong>
+
+                </div>
+
+                <div class="ia-card">
+
+                    <h3>📈 Tendência</h3>
+
+                    <p>
+                        Venda de calças aumentou 23%.
+                    </p>
+
+                </div>
+
+                <div class="ia-card">
+
+                    <h3>🚨 Excesso de Estoque</h3>
+
+                    <p>
+                        Jaquetas Premium estão com baixo giro.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CONFIGURAÇÕES -->
+
+        <section id="configuracoes" class="page">
+
+            <h2>Configurações</h2>
+
+            <form>
+
+                <label>
+                    Nome da Loja
+                </label>
+
+                <input
+                    type="text"
+                    value="Casa Prado"
+                >
+
+                <label>
+                    Estoque Mínimo
+                </label>
+
+                <input
+                    type="number"
+                    value="20"
+                >
+
+                <button
+                    type="button"
+                    id="saveSettings">
+
+                    Salvar Alterações
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <div id="toast"></div>
+
+</body>
+</html>
