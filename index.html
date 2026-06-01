@@ -119,61 +119,64 @@
 
             <div class="critical-products">
 
-                <h3>Produtos Críticos</h3>
+                <div class="table-container">
 
-                <table>
+                    <h3>Produtos Críticos</h3>
 
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Estoque</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                    <table>
 
-                    <tbody>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Estoque</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
 
-                        <tr>
-                            <td>Camiseta Básica</td>
-                            <td>8</td>
-                            <td>Crítico</td>
-                        </tr>
+                        <tbody>
 
-                        <tr>
-                            <td>Calça Jeans</td>
-                            <td>12</td>
-                            <td>Baixo</td>
-                        </tr>
+                            <tr>
+                                <td>Camiseta Básica</td>
+                                <td>8</td>
+                                <td>Crítico</td>
+                            </tr>
 
-                    </tbody>
+                            <tr>
+                                <td>Calça Jeans</td>
+                                <td>12</td>
+                                <td>Baixo</td>
+                            </tr>
 
-                </table>
+                        </tbody>
 
+                    </table>
+                </div>
             </div>
 
             <div class="top-products">
 
                 <h3>Produtos Mais Vendidos</h3>
+                
+                <div class="table-container">
+                    <table>
 
-                <table>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Vendas</th>
+                        </tr>
 
-                    <tr>
-                        <th>Produto</th>
-                        <th>Vendas</th>
-                    </tr>
+                        <tr>
+                            <td>Camiseta Oversized</td>
+                            <td>420</td>
+                        </tr>
 
-                    <tr>
-                        <td>Camiseta Oversized</td>
-                        <td>420</td>
-                    </tr>
+                        <tr>
+                            <td>Calça Jeans</td>
+                            <td>311</td>
+                        </tr>
 
-                    <tr>
-                        <td>Calça Jeans</td>
-                        <td>311</td>
-                    </tr>
-
-                </table>
-
+                    </table>
+                </div>
             </div>
 
             <br>
@@ -204,46 +207,49 @@
 
             </div>
 
-            <table id="inventoryTable">
+            <div class="table-container">
 
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Produto</th>
-                        <th>Categoria</th>
-                        <th>Preço</th>
-                        <th>Estoque</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+                <table id="inventoryTable">
 
-                <tbody id="inventoryBody">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-                    <tr>
-                        <td>001</td>
-                        <td>Camiseta Oversized</td>
-                        <td>Camisetas</td>
-                        <td>R$ 89</td>
-                        <td>35</td>
-                        <td>OK</td>
+                    <tbody id="inventoryBody">
 
-                        <td>
+                        <tr>
+                            <td>001</td>
+                            <td>Camiseta Oversized</td>
+                            <td>Camisetas</td>
+                            <td>R$ 89</td>
+                            <td>35</td>
+                            <td>OK</td>
 
-                            <button class="edit-btn">
-                                ✏️
-                            </button>
+                            <td>
 
-                            <button class="delete-btn">
-                                🗑️
-                            </button>
+                                <button class="edit-btn">
+                                    ✏️
+                                </button>
 
-                        </td>
-                    </tr>
+                                <button class="delete-btn">
+                                    🗑️
+                                </button>
 
-                </tbody>
+                            </td>
+                        </tr>
 
-            </table>
+                    </tbody>
+
+                </table>
+            </div>
 
             <div id="productModal" class="modal">
 

@@ -301,16 +301,13 @@ align-items:center;
 
 }
 
-.modal-content{
-    position:relative;
-
-    background:rgb(20, 21, 117);
-
-    padding:30px;
-
-    border-radius:20px;
-
-    width:400px;
+.modal-content {
+    position: relative;
+    background: rgb(20, 21, 117);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;          /* Mude de 400px para 90% */
+    max-width: 400px;    /* Adicione essa linha */
 }
 
 .edit-btn{
@@ -508,101 +505,159 @@ form button:hover{
 }
 
 /* =========================
-   RESPONSIVIDADE
+   RESPONSIVIDADE CORRIGIDA
 ========================= */
 
-@media(max-width:900px){
+/* Ajuste para tabelas e gráficos */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
 
-    .sidebar{
-        width:90px;
+canvas {
+    max-width: 100% !important;
+}
+
+/* Telas médias (Tablets e Laptops pequenos) */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
     }
-
-    .main-content{
-        margin-left:90px;
+    .main-content {
+        margin-left: 200px;
     }
-
-    .logo h1{
-        font-size:1rem;
-    }
-
-    .menu-item{
-        font-size:.8rem;
-    }
-
-    .charts{
-        grid-template-columns:1fr;
-    }
-
-    .topbar{
-        flex-direction:column;
-        gap:15px;
-    }
-
-    .topbar input{
-        width:100%;
+    .charts {
+        grid-template-columns: 1fr;
     }
 }
 
-.modal-content h2{
-    margin-bottom:20px;
-    color:#83c343;
+/* Telas de Celular (Ajuste Principal) */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Coloca a barra lateral no topo */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative; /* Deixa de ser fixa na esquerda */
+        padding: 15px;
+        gap: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .sidebar nav {
+        display: flex; /* Alinha os botões lado a lado */
+        flex-direction: row; 
+        overflow-x: auto;    /* Permite deslizar o menu para o lado */
+        gap: 10px;
+        padding-bottom: 5px;
+    }
+
+    .menu-item {
+        white-space: nowrap; /* Impede que o texto quebre linha */
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        margin-left: 0; /* Remove a margem lateral */
+        padding: 15px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .kpis {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+    }
+
+    .chart-card {
+        height: 280px;
+    }
+
+    .logo h1 {
+        font-size: 1.5rem;
+    }
 }
 
-.modal-content input{
-    width:100%;
-    padding:12px;
-    margin-bottom:12px;
-    border:none;
-    border-radius:10px;
+/* Telas Muito Pequenas (Celulares antigos/pequenos) */
+@media (max-width: 480px) {
+    .kpis {
+        grid-template-columns: 1fr; /* 1 card por linha apenas */
+    }
+
+    .card p {
+        font-size: 1.4rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .inventory-tools {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .inventory-tools input {
+        width: 100%;
+    }
+
+    .topbar span {
+        font-size: 0.9rem;
+    }
 }
 
-.modal-content button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
+/* Ajustes Finais do Modal e Toast */
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #83c343;
 }
 
-#closeModal{
-    width:40px !important;
-    height:40px;
-
-    position:absolute;
-
-    top:15px;
-    right:15px;
-
-    background:#ff4d4d;
-    color:white;
-
-    border:none;
-    border-radius:50%;
-
-    cursor:pointer;
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: none;
+    border-radius: 10px;
+    color: #020617;
 }
 
-#toast{
-    position:fixed;
+#closeModal {
+    width: 35px !important;
+    height: 35px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    bottom:20px;
-    right:20px;
-
-    background:#83c343;
-    color:#020617;
-
-    padding:15px 25px;
-
-    border-radius:12px;
-
-    font-weight:600;
-
-    opacity:0;
-
-    transition:.3s;
-
-    pointer-events:none;
-
-    z-index:9999;
+#toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #83c343;
+    color: #020617;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transition: .3s;
+    pointer-events: none;
+    z-index: 9999;
 }
