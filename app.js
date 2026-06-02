@@ -52,47 +52,7 @@ const relatoriosMensais = {
         graficoVendas: [200, 150, 400, 100, 90]
     },
     
-    "7": {
-        produtosVendidos: "1.238",
-        faturamento: "R$ 115.900",
-        lucroLiquido: "R$ 103.200",
-        graficoVendas: [360, 270, 260, 130, 170]
-    },
-    
-    "8": {
-        produtosVendidos: "1.434",
-        faturamento: "R$ 132.300",
-        lucroLiquido: "R$ 102.800",
-        graficoVendas: [310, 230, 200, 140, 150]
-    },
-    
-    "9": {
-        produtosVendidos: "974",
-        faturamento: "R$ 100.500",
-        lucroLiquido: "R$ 101.300",
-        graficoVendas: [320, 260, 220, 170, 140]
-    },
-    "10": {
-        produtosVendidos: "950",
-        faturamento: "R$ 98.200",
-        lucroLiquido: "R$ 82.100",
-        graficoVendas: [200, 150, 400, 100, 90]
-    },
-    // Adicione os outros meses aqui...
-    "11": {
-        produtosVendidos: "1.248",
-        faturamento: "R$ 112.400",
-        lucroLiquido: "R$ 103.100",
-        graficoVendas: [300, 220, 200, 110, 150]
-    },
-
-    "12": {
-        produtosVendidos: "1.353",
-        faturamento: "R$ 127.800",
-        lucroLiquido: "R$ 104.400",
-        graficoVendas: [310, 270, 190, 190, 130]
-    }
-};
+},
 
 /* ===========================
    TROCA DE ABAS
