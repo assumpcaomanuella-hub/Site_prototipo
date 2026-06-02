@@ -661,3 +661,148 @@ canvas {
     pointer-events: none;
     z-index: 9999;
 }
+
+/* =========================================
+   SISTEMA DE RELATÓRIOS (VERSÃO FINAL)
+   ========================================= */
+
+.report-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters-years, .filters-months {
+    display: flex;
+    gap: 5px;
+}
+
+.filters-years button, .filters-months button {
+    background: #1e2f73;
+    border: 1px solid #079abc;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.filters-years button.active, .filters-months button.active {
+    background: #079abc;
+}
+
+/* Container ajustado para alinhar perfeitamente as alturas */
+.report-container { 
+    display: grid; 
+    grid-template-columns: 360px 1fr; 
+    gap: 20px; 
+    align-items: stretch; /* Garante que a coluna esquerda e direita tenham o mesmo tamanho */
+}
+
+/* Grade de cards - Agora forçando 5 linhas iguais */
+.report-kpis-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: repeat(5, 1fr); 
+    gap: 10px;
+}
+
+/* Card Corrigido: Não deixa o texto vazar */
+.mini-card { 
+    background: #162044; 
+    padding: 8px 12px; 
+    border-radius: 10px; 
+    border-left: 4px solid #079abc; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente para não encostar na borda */
+    min-height: 0; /* Impede que o card cresça além do grid */
+    overflow: hidden;
+}
+
+/* Títulos: Pequenos o suficiente para caber em uma linha */
+.mini-card h4 { 
+    font-size: 0.6rem; 
+    color: #cbd5e1; 
+    margin-bottom: 2px; 
+    text-transform: uppercase;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+}
+
+/* Números: Ajustados para não estourarem o quadrado */
+.mini-card p { 
+    font-size: 0.95rem; 
+    font-weight: bold; 
+    color: white;
+    line-height: 1;
+}
+
+/* Cores dos textos */
+.mini-card p.blue { color: #5dade2; }
+.mini-card p.green { color: #83c343; }
+.mini-card p.yellow { color: #f1c40f; }
+.mini-card p.purple { color: #a569bd; }
+
+/* Gráficos ajustados para alinhar com os cards */
+.report-charts-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-card-full {
+    background: #162044;
+    padding: 15px;
+    border-radius: 15px;
+    height: 360px; /* Altura total do gráfico superior */
+}
+
+.report-bottom-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.chart-mini {
+    background: #162044;
+    padding: 15px;
+    border-radius: 15px;
+    height: 280px; /* Altura dos gráficos inferiores */
+}
+
+@media (max-width: 1200px) {
+    .report-container { grid-template-columns: 1fr; }
+    .report-kpis-grid { grid-template-rows: auto; }
+}
+
+/* Layout da Aba Relatórios */
+.report-header { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; margin-bottom: 20px; }
+.filters-years, .filters-months { display: flex; gap: 5px; }
+.filters-years button, .filters-months button { background: #1e2f73; border: 1px solid #079abc; color: white; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+.filters-years button.active, .filters-months button.active { background: #079abc; }
+
+.report-container { display: grid; grid-template-columns: 360px 1fr; gap: 20px; }
+.report-kpis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start; }
+
+.mini-card { background: #162044; padding: 12px; border-radius: 10px; text-align: left; border-left: 4px solid #079abc; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.mini-card h4 { font-size: 0.7rem; color: #cbd5e1; margin-bottom: 5px; text-transform: uppercase; }
+.mini-card p { font-size: 1.1rem; font-weight: bold; color: white; }
+
+/* Cores dos números */
+.mini-card p.blue { color: #5dade2; }
+.mini-card p.green { color: #83c343; }
+.mini-card p.yellow { color: #f1c40f; }
+.mini-card p.purple { color: #a569bd; }
+
+.report-charts-area { display: flex; flex-direction: column; gap: 20px; }
+.chart-card-full { background: #162044; padding: 15px; border-radius: 15px; height: 350px; }
+.report-bottom-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.chart-mini { background: #162044; padding: 15px; border-radius: 15px; height: 280px; }
+
+@media (max-width: 1200px) { .report-container { grid-template-columns: 1fr; } }

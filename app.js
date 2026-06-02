@@ -345,56 +345,88 @@ new Chart(profitCtx, {
 
 }
 
-/* ===========================
-   CHART RELATÓRIOS
-=========================== */
+/* =========================================
+   NOVOS GRÁFICOS DA ABA RELATÓRIOS (BuyFlow)
+   ========================================= */
 
-const reportCtx =
-document.getElementById(
-    "reportChart"
-);
+// 1. Gráfico Principal: Produtos Mais Vendidos
+const managerCtx = document.getElementById('managerChart');
+if(managerCtx){
+    new Chart(managerCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Camiseta Básica', 'Camiseta Oversized', 'Calça Jeans Slim', 'Jaqueta Jeans', 'Boné Casual'],
+            datasets: [{
+                label: 'Vendas',
+                data: [350, 280, 210, 180, 120],
+                backgroundColor: '#5dade2'
+            }]
+        },
+        options: {
+            indexAxis: 'y', 
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
+            },
+            plugins: { legend: { display: false } },
+            scales: { 
+                x: { grid: {color: '#1e2f73'}, ticks: {color: '#fff'} },
+                y: { ticks: {color: '#fff'} }
+            }
+        }
+    });
+}
 
-if(reportCtx){
+// 2. Gráfico de Rosca: Distribuição do Estoque (%)
+const planCtx = document.getElementById('planChart');
+if(planCtx){
+    new Chart(planCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Camisetas', 'Calças', 'Jaquetas', 'Acessórios'],
+            datasets: [{
+                data: [40, 25, 20, 15],
+                backgroundColor: ['#5dade2', '#83c343', '#f1c40f', '#a569bd']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
+            },
+            plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: {size: 10} } } }
+        }
+    });
+}
 
-new Chart(reportCtx, {
-
-    type:"doughnut",
-
-    data:{
-
-        labels:[
-            "Camisetas",
-            "Calças",
-            "Jaquetas",
-            "Acessórios"
-        ],
-
-        datasets:[{
-
-            data:[
-                35,
-                25,
-                20,
-                20
-            ],
-
-            backgroundColor:[
-                "#83c343",
-                "#079abc",
-                "#1e2f73",
-                "#020617"
-            ]
-
-        }]
-
-    },
-
-    options:{
-        responsive:true
-    }
-
-});
-
+// 3. Gráfico Inferior Direito: Problemas de Estoque
+const churnReasonCtx = document.getElementById('churnReasonChart');
+if(churnReasonCtx){
+    new Chart(churnReasonCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Estoque Baixo', 'Produto Parado', 'Produto Esgotado', 'Fornecedor Atrasado', 'Devoluções'],
+            datasets: [{
+                data: [12, 8, 5, 3, 7],
+                backgroundColor: '#a569bd'
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
+            },
+            plugins: { legend: { display: false } },
+            scales: { 
+                x: { grid: {color: '#1e2f73'}, ticks: {color: '#fff'} },
+                y: { ticks: {color: '#fff'} }
+            }
+        }
+    });
 }
 
 /* ===========================
