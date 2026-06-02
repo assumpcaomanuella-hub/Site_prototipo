@@ -52,7 +52,7 @@ const relatoriosMensais = {
         graficoVendas: [200, 150, 400, 100, 90]
     },
     
-},
+}
 
 /* ===========================
    TROCA DE ABAS
