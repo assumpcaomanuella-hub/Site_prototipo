@@ -9,6 +9,91 @@ localStorage.getItem(
 
 }
 
+const relatoriosMensais = {
+    "1": {
+        produtosVendidos: "1.248",
+        faturamento: "R$ 124.500",
+        lucroLiquido: "R$ 107.000",
+        graficoVendas: [350, 280, 210, 180, 120]
+    },
+    
+    "2": {
+        produtosVendidos: "1.248",
+        faturamento: "R$ 124.500",
+        lucroLiquido: "R$ 107.000",
+        graficoVendas: [308, 216, 209, 140, 137]
+    },
+    
+    "3": {
+        produtosVendidos: "1.353",
+        faturamento: "R$ 127.800",
+        lucroLiquido: "R$ 104.400",
+        graficoVendas: [310, 270, 190, 190, 130]
+    },
+    
+    "4": {
+        produtosVendidos: "974",
+        faturamento: "R$ 100.500",
+        lucroLiquido: "R$ 101.300",
+        graficoVendas: [320, 260, 220, 170, 140]
+    },
+    
+    "5": {
+        produtosVendidos: "1.248",
+        faturamento: "R$ 112.400",
+        lucroLiquido: "R$ 103.100",
+        graficoVendas: [300, 220, 200, 110, 150]
+    },
+    
+    "6": {
+        produtosVendidos: "950",
+        faturamento: "R$ 98.200",
+        lucroLiquido: "R$ 82.100",
+        graficoVendas: [200, 150, 400, 100, 90]
+    },
+    
+    "7": {
+        produtosVendidos: "1.238",
+        faturamento: "R$ 115.900",
+        lucroLiquido: "R$ 103.200",
+        graficoVendas: [360, 270, 260, 130, 170]
+    },
+    
+    "8": {
+        produtosVendidos: "1.434",
+        faturamento: "R$ 132.300",
+        lucroLiquido: "R$ 102.800",
+        graficoVendas: [310, 230, 200, 140, 150]
+    },
+    
+    "9": {
+        produtosVendidos: "974",
+        faturamento: "R$ 100.500",
+        lucroLiquido: "R$ 101.300",
+        graficoVendas: [320, 260, 220, 170, 140]
+    },
+    "10": {
+        produtosVendidos: "950",
+        faturamento: "R$ 98.200",
+        lucroLiquido: "R$ 82.100",
+        graficoVendas: [200, 150, 400, 100, 90]
+    },
+    // Adicione os outros meses aqui...
+    "11": {
+        produtosVendidos: "1.248",
+        faturamento: "R$ 112.400",
+        lucroLiquido: "R$ 103.100",
+        graficoVendas: [300, 220, 200, 110, 150]
+    },
+
+    "12": {
+        produtosVendidos: "1.353",
+        faturamento: "R$ 127.800",
+        lucroLiquido: "R$ 104.400",
+        graficoVendas: [310, 270, 190, 190, 130]
+    }
+};
+
 /* ===========================
    TROCA DE ABAS
 =========================== */
@@ -352,7 +437,8 @@ new Chart(profitCtx, {
 // 1. Gráfico Principal: Produtos Mais Vendidos
 const managerCtx = document.getElementById('managerChart');
 if(managerCtx){
-    new Chart(managerCtx, {
+    // MUDANÇA AQUI: Adicionamos "window.managerChartInstance =" 
+    window.managerChartInstance = new Chart(managerCtx, {
         type: 'bar',
         data: {
             labels: ['Camiseta Básica', 'Camiseta Oversized', 'Calça Jeans Slim', 'Jaqueta Jeans', 'Boné Casual'],
@@ -973,3 +1059,121 @@ if(logoutBtn){
     });
 
 }
+
+/* ===========================
+   LÓGICA DOS FORNECEDORES
+=========================== */
+
+const addSupplierBtn = document.getElementById("addSupplierBtn");
+const supplierModal = document.getElementById("supplierModal");
+const closeSupplierModal = document.getElementById("closeSupplierModal");
+const saveSupplier = document.getElementById("saveSupplier");
+const supplierGrid = document.getElementById("supplierGrid");
+
+// Abrir tela de Fornecedor
+if(addSupplierBtn){
+    addSupplierBtn.addEventListener("click", () => {
+        supplierModal.style.display = "flex";
+    });
+}
+
+// Fechar tela do fornecedor pelo X
+if(closeSupplierModal){
+    closeSupplierModal.addEventListener("click", () => {
+        supplierModal.style.display = "none";
+    });
+}
+
+// Fechar tela do fornecedor clicando fora
+window.addEventListener("click", (event) => {
+    if(event.target === supplierModal){
+        supplierModal.style.display = "none";
+    }
+});
+
+// Salvar novo fornecedor
+if(saveSupplier){
+    saveSupplier.addEventListener("click", () => {
+        const nome = document.getElementById("supplierName").value;
+        const entrega = document.getElementById("supplierDelivery").value;
+        const avaliacao = document.getElementById("supplierRating").value;
+
+        // validaçao
+        if(!nome || !entrega || !avaliacao){
+            showToast("Preencha todos os campos do fornecedor.");
+            return;
+        }
+
+        if(avaliacao < 1 || avaliacao > 5){
+            showToast("A avaliação deve ser entre 1 e 5.");
+            return;
+        }
+
+        // JS da avaliaçao
+        const estrelas = "⭐".repeat(parseInt(avaliacao));
+
+        // criaçao do card
+        const card = document.createElement("div");
+        card.classList.add("supplier-card");
+        card.innerHTML = `
+            <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
+            <h3>${nome}</h3>
+            <p>Entrega média: ${entrega} dias</p>
+            <p>Avaliação: ${estrelas}</p>
+        `;
+
+        // funçao de deletar
+        card.querySelector(".delete-supplier-btn").addEventListener("click", () => {
+            card.remove();
+            showToast("Fornecedor removido.");
+        });
+
+        // Adiciona na tela
+        supplierGrid.appendChild(card);
+
+        // limpa os campos e ficha
+        document.getElementById("supplierName").value = "";
+        document.getElementById("supplierDelivery").value = "";
+        document.getElementById("supplierRating").value = "";
+        supplierModal.style.display = "none";
+
+        showToast("Fornecedor adicionado!");
+    });
+}
+
+// Fazer botão de excluir funcionar nos cards do proprio html
+document.querySelectorAll(".delete-supplier-btn").forEach(button => {
+    button.addEventListener("click", (event) => {
+        event.target.closest(".supplier-card").remove();
+        showToast("Fornecedor removido.");
+    });
+});
+
+// Seleciona os botões
+const monthButtons = document.querySelectorAll('.month-btn');
+
+monthButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Estilo visual: remove active de todos e coloca no clicado
+        monthButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const mes = button.dataset.month;
+        const dados = relatoriosMensais[mes];
+
+        if (dados) {
+            // Atualiza os textos na tela usando os IDs que criamos no HTML
+            document.getElementById('kpi-vendidos').textContent = dados.produtosVendidos;
+            document.getElementById('kpi-faturamento').textContent = dados.faturamento;
+            document.getElementById('kpi-lucro').textContent = dados.lucroLiquido;
+
+            // Atualiza o gráfico de barras
+            if (window.managerChartInstance) {
+                window.managerChartInstance.data.datasets[0].data = dados.graficoVendas;
+                window.managerChartInstance.update(); // Faz a animação de mudança
+            }
+            
+            showToast(`Mês ${mes} carregado com sucesso!`);
+        }
+    });
+});

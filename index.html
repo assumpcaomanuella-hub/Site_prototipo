@@ -298,33 +298,67 @@
         </section>
 
         <!-- FORNECEDORES -->
-
         <section id="fornecedores" class="page">
 
-            <h2>Fornecedores</h2>
+            <div class="page-header">
+                <h2>Fornecedores</h2>
+                <button type="button" id="addSupplierBtn" class="add-btn">
+                    Novo Fornecedor
+                </button>
+            </div>
 
-            <div class="supplier-grid">
+            <div class="supplier-grid" id="supplierGrid">
 
                 <div class="supplier-card">
-
+                    <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
                     <h3>Tecidos Brasil</h3>
-
                     <p>Entrega média: 4 dias</p>
-
                     <p>Avaliação: ⭐⭐⭐⭐⭐</p>
-
                 </div>
 
                 <div class="supplier-card">
-
+                    <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
                     <h3>Fashion Supply</h3>
-
                     <p>Entrega média: 7 dias</p>
-
                     <p>Avaliação: ⭐⭐⭐⭐</p>
-
                 </div>
 
+            </div>
+
+            <!-- Tela do novo fornecedor -->
+            <div id="supplierModal" class="modal">
+                <div class="modal-content">
+                    
+                    <button id="closeSupplierModal" class="close-modal-btn">✖</button>
+
+                    <h2 id="modalTitle">Novo Fornecedor</h2>
+
+                    <input id="supplierName" type="text" placeholder="Nome da Empresa">
+                    <input id="supplierDelivery" type="number" placeholder="Dias de entrega (ex: 5)">
+                    <input id="supplierRating" type="number" placeholder="Avaliação de 1 a 5" min="1" max="5">
+
+                    <button id="saveSupplier">Salvar</button>
+                </div>
+            </div>
+
+        </section>
+
+            <!-- tela para novo fornecedor -->
+            <div id="supplierModal" class="modal">
+                <div class="modal-content">
+                    
+                    <h2 id="modalTitle">Novo Fornecedor</h2>
+                    
+                    <button id="closeSupplierModal">✖</button>
+
+                    <input id="supplierName" type="text" placeholder="Nome da Empresa">
+                    
+                    <input id="supplierDelivery" type="number" placeholder="Dias de entrega (ex: 5)">
+                    
+                    <input id="supplierRating" type="number" placeholder="Avaliação de 1 a 5" min="1" max="5">
+
+                    <button id="saveSupplier">Salvar</button>
+                </div>
             </div>
 
         </section>
@@ -339,10 +373,14 @@
                     <button class="year-btn active" data-year="2026">2026</button>
                 </div>
                 <div class="filters-months">
-                    <!-- Repita para todos os meses -->
                     <button class="month-btn" data-month="1">1</button>
                     <button class="month-btn" data-month="2">2</button>
-                    <!-- ... até o 12 ... -->
+                    <button class="month-btn" data-month="3">3</button>
+                    <button class="month-btn" data-month="4">4</button>
+                    <button class="month-btn" data-month="5">5</button>
+                    <button class="month-btn" data-month="6">6</button>
+                    <button class="month-btn" data-month="7">7</button>
+                    <button class="month-btn" data-month="8">8</button>
                     <button class="month-btn active" data-month="9">9</button>
                     <button class="month-btn" data-month="10">10</button>
                     <button class="month-btn" data-month="11">11</button>
@@ -353,20 +391,20 @@
             <div class="report-container">
                 <!-- Coluna de KPIs da Esquerda (Valores conforme sua imagem) -->
                 <div class="report-kpis-grid">
-                    <div class="mini-card"><h4>Produtos Vendidos</h4><p>1.248</p></div>
-                    <div class="mini-card"><h4>Faturamento Total</h4><p class="blue">R$ 124.500</p></div>
+                    <div class="mini-card"><h4>Produtos Vendidos</h4><p id="kpi-vendidos">1.248</p></div>
+                    <div class="mini-card"><h4>Faturamento Total</h4><p id="kpi-faturamento" class="blue">R$ 124.500</p></div>
                     
-                    <div class="mini-card"><h4>Pedidos Realizados</h4><p class="yellow">356</p></div>
+                    <div class="mini-card"><h4>Pedidos Realizados</h4><p>356</p></div>
                     <div class="mini-card"><h4>Ticket Médio</h4><p class="green">R$ 349,72</p></div>
                     
-                    <div class="mini-card"><h4>Produtos com <br>Estoque Baixo</h4><p class="purple">12</p></div>
+                    <div class="mini-card"><h4>Produtos com Estoque Baixo</h4><p class="purple">12</p></div>
                     <div class="mini-card"><h4>Gastos Operacionais</h4><p class="purple">R$ 86.300</p></div>
                     
-                    <div class="mini-card"><h4>Taxa de Ruptura <br>de Estoque</h4><p class="purple">3,2%</p></div>
+                    <div class="mini-card"><h4>Taxa de Ruptura de Estoque</h4><p class="purple">3,2%</p></div>
                     <div class="mini-card"><h4>Margem de Lucro</h4><p class="purple">14,1%</p></div>
 
                     <div class="mini-card"><h4>Produtos em Estoque</h4><p class="blue">1.573</p></div>
-                    <div class="mini-card"><h4>Lucro Líquido</h4><p class="blue">R$ 107.000</p></div>
+                    <div class="mini-card"><h4>Lucro Líquido</h4><p id="kpi-lucro" class="blue">R$ 107.000</p></div>
                 </div>
 
                 <!-- Coluna de Gráficos da Direita -->
