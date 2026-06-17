@@ -13,14 +13,20 @@ body{
     height:100vh;
 }
 
-.login-card {
-    width: 90%;         
-    max-width: 400px;   
-    background: #1e2f73;
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+.login-card{
+
+    width:400px;
+
+    background:#1e2f73;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.4);
 }
 
 .login-card h1{

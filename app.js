@@ -9,51 +9,6 @@ localStorage.getItem(
 
 }
 
-const relatoriosMensais = {
-    "1": {
-        produtosVendidos: "1.248",
-        faturamento: "R$ 124.500",
-        lucroLiquido: "R$ 107.000",
-        graficoVendas: [350, 280, 210, 180, 120]
-    },
-    
-    "2": {
-        produtosVendidos: "1.248",
-        faturamento: "R$ 124.500",
-        lucroLiquido: "R$ 107.000",
-        graficoVendas: [308, 216, 209, 140, 137]
-    },
-    
-    "3": {
-        produtosVendidos: "1.353",
-        faturamento: "R$ 127.800",
-        lucroLiquido: "R$ 104.400",
-        graficoVendas: [310, 270, 190, 190, 130]
-    },
-    
-    "4": {
-        produtosVendidos: "974",
-        faturamento: "R$ 100.500",
-        lucroLiquido: "R$ 101.300",
-        graficoVendas: [320, 260, 220, 170, 140]
-    },
-    
-    "5": {
-        produtosVendidos: "1.248",
-        faturamento: "R$ 112.400",
-        lucroLiquido: "R$ 103.100",
-        graficoVendas: [300, 220, 200, 110, 150]
-    },
-    
-    "6": {
-        produtosVendidos: "950",
-        faturamento: "R$ 98.200",
-        lucroLiquido: "R$ 82.100",
-        graficoVendas: [200, 150, 400, 100, 90]
-    },
-    
-}
-
 /* ===========================
    TROCA DE ABAS
 =========================== */
@@ -94,13 +49,13 @@ menuItems.forEach(item => {
 
 const buyflowData = {
 
-    faturamento: 124500,
+    faturamento: 128475,
 
     lucro: 107000,
 
     gastos: 86300,
 
-    produtos: 1
+    produtos: 8
 
 };
 
@@ -111,9 +66,18 @@ function updateTotalProducts(){
     "#inventoryBody tr"
     ).length;
 
+    const totalElement =
     document.getElementById(
     "totalProdutos"
-    ).textContent = total;
+    );
+
+    if(totalElement){
+        totalElement.textContent = total;
+    }
+
+    if(typeof updateReportDashboard === "function"){
+        updateReportDashboard();
+    }
 
 }
 
@@ -180,36 +144,15 @@ function animateValue(element, start, end, duration){
 
 window.addEventListener("load", () => {
 
-    const cards =
-        document.querySelectorAll(".card p");
-
-    animateValue(
-        cards[0],
-        0,
-        buyflowData.faturamento,
-        1500
+    const totalProducts =
+    document.getElementById(
+    "dashboardTotalProducts"
     );
 
-    animateValue(
-        cards[1],
-        0,
-        buyflowData.lucro,
-        1500
-    );
-
-    animateValue(
-        cards[2],
-        0,
-        buyflowData.gastos,
-        1500
-    );
-
-    animateValue(
-        cards[3],
-        0,
-        buyflowData.produtos,
-        1500
-    );
+    if(totalProducts){
+        totalProducts.textContent =
+        "1.248";
+    }
 
 });
 
@@ -236,37 +179,77 @@ new Chart(salesCtx, {
             "Mar",
             "Abr",
             "Mai",
-            "Jun"
+            "Jun",
+            "Jul"
         ],
 
-        datasets:[{
+        datasets:[
+        {
 
-            label:"Vendas",
+            label:"Quant. Atual de Estoque",
 
             data:[
-                15000,
-                22000,
-                28000,
-                25000,
-                32000,
-                40000
+                33,
+                30,
+                40,
+                41,
+                44,
+                47,
+                51
             ],
 
-            borderColor:"#079abc",
+            borderColor:"#0b77ff",
 
             backgroundColor:
-            "rgba(7,154,188,0.2)",
+            "rgba(11,119,255,0.08)",
 
             tension:0.4,
 
             fill:true
 
-        }]
+        },
+        {
+
+            label:"Estoque Ideal",
+
+            data:[
+                16,
+                14,
+                20,
+                21,
+                23,
+                25,
+                27
+            ],
+
+            borderColor:"#10b981",
+
+            backgroundColor:
+            "rgba(16,185,129,0.08)",
+
+            tension:0.4,
+
+            fill:false
+
+        }
+        ]
 
     },
 
     options:{
-        responsive:true
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+            legend:{
+                position:"top"
+            }
+        },
+        scales:{
+            y:{
+                beginAtZero:true,
+                max:60
+            }
+        }
     }
 
 });
@@ -390,133 +373,680 @@ new Chart(profitCtx, {
 
 }
 
-/* =========================================
-   NOVOS GRÁFICOS DA ABA RELATÓRIOS (BuyFlow)
-   ========================================= */
+/* ===========================
+   CHART RELATÓRIOS
+=========================== */
 
-// 1. Gráfico Principal: Produtos Mais Vendidos
-const managerCtx = document.getElementById('managerChart');
-if(managerCtx){
-    // MUDANÇA AQUI: Adicionamos "window.managerChartInstance =" 
-    window.managerChartInstance = new Chart(managerCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Camiseta Básica', 'Camiseta Oversized', 'Calça Jeans Slim', 'Jaqueta Jeans', 'Boné Casual'],
-            datasets: [{
-                label: 'Vendas',
-                data: [350, 280, 210, 180, 120],
-                backgroundColor: '#5dade2'
-            }]
+const reportCtx =
+document.getElementById(
+    "categoryChart"
+);
+
+if(reportCtx){
+
+new Chart(reportCtx, {
+
+    type:"doughnut",
+
+    data:{
+
+        labels:[
+            "Jaquetas",
+            "Camisetas Polo",
+            "Calças Jeans",
+            "Camisas Sociais",
+            "Bermudas"
+        ],
+
+        datasets:[{
+
+            data:[
+                30,
+                25,
+                20,
+                15,
+                10
+            ],
+
+            backgroundColor:[
+                "#83c343",
+                "#079abc",
+                "#1e2f73",
+                "#0b77ff",
+                "#9333ea"
+            ]
+
+        }]
+
+    },
+
+    options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+            legend:{
+                position:"bottom"
+            }
         },
-        options: {
-            indexAxis: 'y', 
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
+        cutout:"62%"
+    }
+
+});
+
+}
+
+const reportPageCtx =
+document.getElementById(
+    "bestSellersChart"
+);
+
+if(reportPageCtx){
+
+    var bestSellersChart =
+    new Chart(reportPageCtx, {
+
+        type:"bar",
+
+        data:{
+            labels:[],
+            datasets:[
+            {
+                label:"Produtos vendidos",
+                data:[],
+                backgroundColor:"#0b77ff"
             },
-            plugins: { legend: { display: false } },
-            scales: { 
-                x: { grid: {color: '#1e2f73'}, ticks: {color: '#fff'} },
-                y: { ticks: {color: '#fff'} }
+            {
+                label:"Faturamento",
+                data:[],
+                backgroundColor:"#83c343",
+                xAxisID:"xRevenue"
+            },
+            {
+                label:"Estoque baixo",
+                data:[],
+                backgroundColor:"#9333ea"
+            }
+            ]
+        },
+
+        options:{
+            indexAxis:"y",
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{
+                legend:{
+                    position:"top"
+                },
+                tooltip:{
+                    callbacks:{
+                        label(context){
+                            if(context.dataset.label === "Faturamento"){
+                                return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                            }
+
+                            return `${context.dataset.label}: ${context.raw}`;
+                        }
+                    }
+                }
+            },
+            scales:{
+                x:{
+                    beginAtZero:true,
+                    position:"bottom",
+                    title:{
+                        display:true,
+                        text:"Quantidade"
+                    }
+                },
+                xRevenue:{
+                    beginAtZero:true,
+                    position:"top",
+                    grid:{
+                        drawOnChartArea:false
+                    },
+                    ticks:{
+                        callback(value){
+                            return formatCurrency(value);
+                        }
+                    },
+                    title:{
+                        display:true,
+                        text:"Faturamento"
+                    }
+                }
             }
         }
+
     });
+
 }
 
-// 2. Gráfico de Rosca: Distribuição do Estoque (%)
-const planCtx = document.getElementById('planChart');
-if(planCtx){
-    new Chart(planCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Camisetas', 'Calças', 'Jaquetas', 'Acessórios'],
-            datasets: [{
-                data: [40, 25, 20, 15],
-                backgroundColor: ['#5dade2', '#83c343', '#f1c40f', '#a569bd']
+const stockDistributionCtx =
+document.getElementById(
+    "stockDistributionChart"
+);
+
+if(stockDistributionCtx){
+
+    var stockDistributionChart =
+    new Chart(stockDistributionCtx, {
+
+        type:"doughnut",
+
+        data:{
+            labels:[],
+            datasets:[{
+                data:[],
+                backgroundColor:[
+                    "#83c343",
+                    "#079abc",
+                    "#1e2f73",
+                    "#0b77ff",
+                    "#9333ea",
+                    "#f59e0b",
+                    "#ef4444"
+                ]
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
+
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{
+                legend:{
+                    position:"bottom"
+                },
+                tooltip:{
+                    callbacks:{
+                        label(context){
+                            return `${context.label}: ${context.raw.toFixed(1)}%`;
+                        }
+                    }
+                }
             },
-            plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: {size: 10} } } }
+            cutout:"62%"
         }
+
     });
+
 }
 
-// 3. Gráfico Inferior Direito: Problemas de Estoque
-const churnReasonCtx = document.getElementById('churnReasonChart');
-if(churnReasonCtx){
-    new Chart(churnReasonCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Estoque Baixo', 'Produto Parado', 'Produto Esgotado', 'Fornecedor Atrasado', 'Devoluções'],
-            datasets: [{
-                data: [12, 8, 5, 3, 7],
-                backgroundColor: '#a569bd'
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: {
-                padding: 30 // Aumente esse número para o gráfico diminuir e sobrar mais borda
-            },
-            plugins: { legend: { display: false } },
-            scales: { 
-                x: { grid: {color: '#1e2f73'}, ticks: {color: '#fff'} },
-                y: { ticks: {color: '#fff'} }
-            }
+const reportMonthData = {
+    1:{
+        sold:92,
+        orders:41,
+        costs:13800,
+        productSales:[18,14,9,12,21,11,7,16],
+        productLowStock:[4,6,8,5,3,7,9,4]
+    },
+    2:{
+        sold:116,
+        orders:52,
+        costs:15200,
+        productSales:[22,18,11,15,24,14,9,20],
+        productLowStock:[3,5,7,6,2,6,8,5]
+    },
+    3:{
+        sold:134,
+        orders:58,
+        costs:16900,
+        productSales:[25,21,13,17,27,16,11,23],
+        productLowStock:[5,4,9,5,3,7,10,4]
+    },
+    4:{
+        sold:121,
+        orders:55,
+        costs:16100,
+        productSales:[23,19,12,16,25,15,10,21],
+        productLowStock:[4,6,8,7,3,6,9,5]
+    },
+    5:{
+        sold:148,
+        orders:64,
+        costs:18400,
+        productSales:[28,23,15,19,31,17,12,26],
+        productLowStock:[3,5,7,5,2,8,10,4]
+    },
+    6:{
+        sold:173,
+        orders:72,
+        costs:20300,
+        productSales:[33,27,18,22,36,20,14,30],
+        productLowStock:[2,4,6,5,3,7,9,4]
+    }
+};
+
+let selectedReportMonth = 1;
+
+function formatCurrency(value){
+
+    return value.toLocaleString(
+        "pt-BR",
+        {
+            style:"currency",
+            currency:"BRL"
         }
-    });
+    );
+
 }
+
+function parseCurrency(value){
+
+    return Number(
+        String(value)
+        .replace(/[^\d,.-]/g,"")
+        .replace(".","")
+        .replace(",",".")
+    ) || 0;
+
+}
+
+function getReportProducts(){
+
+    return [
+        ...document.querySelectorAll("#inventoryBody tr")
+    ].map(row => {
+
+        const cells = [
+            ...row.querySelectorAll("td")
+        ];
+
+        const compactRow = cells.length < 8;
+        const nameIndex = compactRow ? 1 : 0;
+        const categoryIndex = compactRow ? 2 : 4;
+        const priceIndex = compactRow ? 3 : 5;
+        const stockIndex = compactRow ? 4 : null;
+
+        const name =
+        cells[nameIndex]?.textContent
+        .replace("▣","")
+        .trim() || "Produto";
+
+        const category =
+        cells[categoryIndex]?.textContent
+        .trim() || "Sem categoria";
+
+        const price =
+        parseCurrency(
+            cells[priceIndex]?.textContent || "0"
+        );
+
+        const stock =
+        Number(row.dataset.stock || cells[stockIndex]?.textContent || 0);
+
+        return {
+            name,
+            category,
+            price,
+            stock
+        };
+
+    });
+
+}
+
+function buildReportSnapshot(month){
+
+    const products =
+    getReportProducts();
+
+    const monthData =
+    reportMonthData[month] ||
+    reportMonthData[1];
+
+    const stockTotal =
+    products.reduce(
+        (total, product) => total + product.stock,
+        0
+    );
+
+    const averagePrice =
+    products.length
+    ? products.reduce(
+        (total, product) => total + product.price,
+        0
+    ) / products.length
+    : 0;
+
+    const monthFactor =
+    0.82 + month * 0.08;
+
+    const revenue =
+    Math.round(
+        monthData.sold *
+        averagePrice *
+        monthFactor
+    );
+
+    const costs =
+    monthData.costs;
+
+    const netProfit =
+    revenue - costs;
+
+    const lowStock =
+    products.filter(product =>
+        product.stock > 0 &&
+        product.stock <= 20
+    ).length;
+
+    const stockout =
+    products.filter(product =>
+        product.stock <= 0
+    ).length;
+
+    const soldByProduct =
+    products.map((product,index) => {
+
+        return {
+            ...product,
+            sold:monthData.productSales[index] ||
+            Math.max(6, 10 + month + index),
+            lowStockAmount:monthData.productLowStock[index] ||
+            Math.max(2, 4 + ((month + index) % 5))
+        };
+
+    })
+    .sort((a,b) => b.sold - a.sold)
+    .slice(0,5);
+
+    const categoryTotals =
+    products.reduce((totals, product) => {
+
+        totals[product.category] =
+        (totals[product.category] || 0) +
+        product.stock;
+
+        return totals;
+
+    },{});
+
+    const categoryPercentages =
+    Object.entries(categoryTotals)
+    .map(([category,total]) => ({
+        category,
+        percent:stockTotal
+        ? (total / stockTotal) * 100
+        : 0
+    }));
+
+    return {
+        products,
+        monthData,
+        revenue,
+        costs,
+        netProfit,
+        lowStock,
+        stockTotal,
+        stockoutRate:products.length
+        ? (stockout / products.length) * 100
+        : 0,
+        profitMargin:revenue
+        ? (netProfit / revenue) * 100
+        : 0,
+        soldByProduct,
+        categoryPercentages
+    };
+
+}
+
+function setReportValue(id,value){
+
+    const element =
+    document.getElementById(id);
+
+    if(element)
+        element.textContent = value;
+
+}
+
+function updateReportDashboard(){
+
+    const snapshot =
+    buildReportSnapshot(selectedReportMonth);
+
+    setReportValue(
+        "reportSoldProducts",
+        snapshot.monthData.sold.toLocaleString("pt-BR")
+    );
+
+    setReportValue(
+        "reportRevenue",
+        formatCurrency(snapshot.revenue)
+    );
+
+    setReportValue(
+        "reportOrders",
+        snapshot.monthData.orders.toLocaleString("pt-BR")
+    );
+
+    setReportValue(
+        "reportAverageTicket",
+        formatCurrency(
+            snapshot.monthData.orders
+            ? snapshot.revenue / snapshot.monthData.orders
+            : 0
+        )
+    );
+
+    setReportValue(
+        "reportLowStock",
+        snapshot.lowStock.toLocaleString("pt-BR")
+    );
+
+    setReportValue(
+        "reportCosts",
+        formatCurrency(snapshot.costs)
+    );
+
+    setReportValue(
+        "reportStockoutRate",
+        `${snapshot.stockoutRate.toFixed(1).replace(".",",")}%`
+    );
+
+    setReportValue(
+        "reportProfitMargin",
+        `${snapshot.profitMargin.toFixed(1).replace(".",",")}%`
+    );
+
+    setReportValue(
+        "reportStockProducts",
+        snapshot.stockTotal.toLocaleString("pt-BR")
+    );
+
+    setReportValue(
+        "reportNetProfit",
+        formatCurrency(snapshot.netProfit)
+    );
+
+    if(typeof bestSellersChart !== "undefined"){
+
+        bestSellersChart.data.labels =
+        snapshot.soldByProduct.map(product => product.name);
+
+        bestSellersChart.data.datasets[0].data =
+        snapshot.soldByProduct.map(product => product.sold);
+
+        bestSellersChart.data.datasets[1].data =
+        snapshot.soldByProduct.map(product =>
+            Math.round(product.sold * product.price)
+        );
+
+        bestSellersChart.data.datasets[2].data =
+        snapshot.soldByProduct.map(product =>
+            product.lowStockAmount
+        );
+
+        bestSellersChart.update();
+
+    }
+
+    if(typeof stockDistributionChart !== "undefined"){
+
+        stockDistributionChart.data.labels =
+        snapshot.categoryPercentages.map(item => item.category);
+
+        stockDistributionChart.data.datasets[0].data =
+        snapshot.categoryPercentages.map(item => item.percent);
+
+        stockDistributionChart.update();
+
+    }
+
+}
+
+document
+.querySelectorAll("[data-report-month]")
+.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        document
+        .querySelectorAll("[data-report-month]")
+        .forEach(monthButton =>
+            monthButton.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        selectedReportMonth =
+        Number(button.dataset.reportMonth);
+
+        updateReportDashboard();
+
+    });
+
+});
+
+updateReportDashboard();
 
 /* ===========================
    PESQUISA INVENTÁRIO
 =========================== */
 
 const inventorySearch =
-document.querySelector(
-".inventory-tools input"
+document.getElementById(
+"searchProduct"
 );
 
-if(inventorySearch){
+const inventoryBody =
+document.getElementById(
+"inventoryBody"
+);
 
-inventorySearch.addEventListener(
-"keyup",
+const emptyProducts =
+document.getElementById(
+"emptyProducts"
+);
 
-() => {
+function getInventoryRows(){
 
-    const search =
-    inventorySearch.value
-    .toLowerCase();
+    if(!inventoryBody)
+        return [];
 
-    const rows =
-    document.querySelectorAll(
-    "#inventario tbody tr"
-    );
-
-    rows.forEach(row => {
-
-        const text =
-        row.textContent
-        .toLowerCase();
-
-        row.style.display =
-        text.includes(search)
-        ? ""
-        : "none";
-
-    });
-
-});
+    return [
+        ...inventoryBody.querySelectorAll("tr")
+    ];
 
 }
 
+function updateInventoryStats(){
+
+    const rows =
+    getInventoryRows();
+
+    const active =
+    rows.filter(row =>
+        row.querySelector(".inventory-status")
+        ?.textContent.trim() === "Ativo"
+    ).length;
+
+    const inactive =
+    rows.filter(row =>
+        row.querySelector(".inventory-status")
+        ?.textContent.trim() === "Inativo"
+    ).length;
+
+    const out =
+    rows.filter(row =>
+        Number(row.dataset.stock || 0) <= 0
+    ).length;
+
+    const totalElement =
+    document.getElementById("inventoryTotal");
+
+    if(totalElement)
+        totalElement.textContent = rows.length;
+
+    const activeElement =
+    document.getElementById("inventoryActive");
+
+    if(activeElement)
+        activeElement.textContent = active;
+
+    const inactiveElement =
+    document.getElementById("inventoryInactive");
+
+    if(inactiveElement)
+        inactiveElement.textContent = inactive;
+
+    const outElement =
+    document.getElementById("inventoryOut");
+
+    if(outElement)
+        outElement.textContent = out;
+
+}
+
+function filterInventory(){
+
+    if(!inventorySearch)
+        return;
+
+    const search =
+    inventorySearch.value
+    .trim()
+    .toLowerCase();
+
+    let visibleRows = 0;
+
+    getInventoryRows()
+    .forEach(row => {
+
+        const shouldShow =
+        row.textContent
+        .toLowerCase()
+        .includes(search);
+
+        row.style.display =
+        shouldShow
+        ? ""
+        : "none";
+
+        if(shouldShow)
+            visibleRows++;
+
+    });
+
+    if(emptyProducts){
+
+        emptyProducts.style.display =
+        visibleRows
+        ? "none"
+        : "block";
+
+    }
+
+}
+
+if(inventorySearch){
+
+    inventorySearch.addEventListener(
+    "input",
+    filterInventory
+    );
+
+}
 
 /* ===========================
    ALERTA DE ESTOQUE
@@ -524,53 +1054,33 @@ inventorySearch.addEventListener(
 
 function checkStock(){
 
-    const rows =
-    document.querySelectorAll(
-    "#inventario tbody tr"
-    );
+    getInventoryRows()
+    .forEach(row => {
 
-    rows.forEach(row => {
-
-        const estoque =
-        parseInt(
-        row.children[4]
-        .textContent
+        const status =
+        row.querySelector(
+        ".inventory-status"
         );
 
-        const statusCell =
-        row.children[5];
+        if(!status)
+            return;
 
-        if(estoque <= 10){
+        const stock =
+        Number(row.dataset.stock || 0);
 
-            statusCell.textContent =
-            "Crítico";
-
-            statusCell.style.color =
-            "#ff3b30";
-
+        if(stock <= 0){
+            status.textContent = "Inativo";
+            status.className = "inventory-status inactive";
         }
-
-        else if(estoque <= 20){
-
-            statusCell.textContent =
-            "Baixo";
-
-            statusCell.style.color =
-            "#ff9500";
-
-        }
-
         else{
-
-            statusCell.textContent =
-            "OK";
-
-            statusCell.style.color =
-            "#34c759";
-
+            status.textContent = "Ativo";
+            status.className = "inventory-status active";
         }
 
     });
+
+    updateInventoryStats();
+    filterInventory();
 
 }
 
@@ -582,13 +1092,13 @@ checkStock();
 
 const notifications = [
 
-"⚠️ Camiseta Básica precisa de reposição.",
+"⚠️ Camiseta Polo Piquet precisa de reposição.",
 
 "📈 Lucro aumentou 12% este mês.",
 
-"🚚 Fornecedor Fashion Supply entregará amanhã.",
+"🚚 Fornecedor Casa Prado entregará amanhã.",
 
-"🔥 Produto Oversized está em alta demanda."
+"🔥 Jaqueta Bomber Masculina está em alta demanda."
 
 ];
 
@@ -644,8 +1154,8 @@ button.addEventListener(
 =========================== */
 
 const addProductButton =
-document.querySelector(
-".inventory-tools button"
+document.getElementById(
+"addProductButton"
 );
 
 const modal =
@@ -794,6 +1304,8 @@ if(saveProduct){
 
         const row =
         document.createElement("tr");
+
+        row.dataset.stock = estoque;
 
         const id =
         document.querySelectorAll(
@@ -1021,119 +1533,707 @@ if(logoutBtn){
 }
 
 /* ===========================
-   LÓGICA DOS FORNECEDORES
+   CONFIGURAÇÕES
 =========================== */
 
-const addSupplierBtn = document.getElementById("addSupplierBtn");
-const supplierModal = document.getElementById("supplierModal");
-const closeSupplierModal = document.getElementById("closeSupplierModal");
-const saveSupplier = document.getElementById("saveSupplier");
-const supplierGrid = document.getElementById("supplierGrid");
+const settingToggles =
+document.querySelectorAll(
+"#configuracoes .toggle"
+);
 
-// Abrir tela de Fornecedor
-if(addSupplierBtn){
-    addSupplierBtn.addEventListener("click", () => {
-        supplierModal.style.display = "flex";
+settingToggles.forEach(toggle => {
+
+    toggle.addEventListener(
+    "click",
+
+    () => {
+
+        toggle.classList.toggle("active");
+
+        toggle.setAttribute(
+        "aria-pressed",
+        toggle.classList.contains("active")
+        ? "true"
+        : "false"
+        );
+
     });
-}
 
-// Fechar tela do fornecedor pelo X
-if(closeSupplierModal){
-    closeSupplierModal.addEventListener("click", () => {
-        supplierModal.style.display = "none";
-    });
-}
-
-// Fechar tela do fornecedor clicando fora
-window.addEventListener("click", (event) => {
-    if(event.target === supplierModal){
-        supplierModal.style.display = "none";
-    }
 });
 
-// Salvar novo fornecedor
-if(saveSupplier){
-    saveSupplier.addEventListener("click", () => {
-        const nome = document.getElementById("supplierName").value;
-        const entrega = document.getElementById("supplierDelivery").value;
-        const avaliacao = document.getElementById("supplierRating").value;
+const addEmailBtn =
+document.getElementById(
+"addEmailBtn"
+);
 
-        // validaçao
-        if(!nome || !entrega || !avaliacao){
-            showToast("Preencha todos os campos do fornecedor.");
+const notificationEmail =
+document.getElementById(
+"notificationEmail"
+);
+
+const emailList =
+document.getElementById(
+"emailList"
+);
+
+function removeEmail(button){
+
+    button.closest(".email-chip")
+    .remove();
+
+    showToast(
+    "E-mail removido."
+    );
+
+}
+
+if(emailList){
+
+    emailList
+    .querySelectorAll("button")
+    .forEach(button => {
+
+        button.addEventListener(
+        "click",
+        () => removeEmail(button)
+        );
+
+    });
+
+}
+
+if(addEmailBtn){
+
+    addEmailBtn.addEventListener(
+    "click",
+
+    () => {
+
+        const email =
+        notificationEmail.value.trim();
+
+        if(
+            !email ||
+            !email.includes("@")
+        ){
+            showToast(
+            "Informe um e-mail válido."
+            );
             return;
         }
 
-        if(avaliacao < 1 || avaliacao > 5){
-            showToast("A avaliação deve ser entre 1 e 5.");
-            return;
-        }
+        const chip =
+        document.createElement("div");
 
-        // JS da avaliaçao
-        const estrelas = "⭐".repeat(parseInt(avaliacao));
+        chip.className =
+        "email-chip";
 
-        // criaçao do card
-        const card = document.createElement("div");
-        card.classList.add("supplier-card");
-        card.innerHTML = `
-            <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
-            <h3>${nome}</h3>
-            <p>Entrega média: ${entrega} dias</p>
-            <p>Avaliação: ${estrelas}</p>
+        chip.innerHTML = `
+        ${email}
+        <button type="button" aria-label="Remover e-mail">×</button>
         `;
 
-        // funçao de deletar
-        card.querySelector(".delete-supplier-btn").addEventListener("click", () => {
-            card.remove();
-            showToast("Fornecedor removido.");
-        });
+        chip.querySelector("button")
+        .addEventListener(
+        "click",
+        event => removeEmail(event.target)
+        );
 
-        // Adiciona na tela
-        supplierGrid.appendChild(card);
+        emailList.appendChild(chip);
 
-        // limpa os campos e ficha
-        document.getElementById("supplierName").value = "";
-        document.getElementById("supplierDelivery").value = "";
-        document.getElementById("supplierRating").value = "";
-        supplierModal.style.display = "none";
+        notificationEmail.value =
+        "";
 
-        showToast("Fornecedor adicionado!");
+        showToast(
+        "E-mail adicionado."
+        );
+
     });
+
 }
 
-// Fazer botão de excluir funcionar nos cards do proprio html
-document.querySelectorAll(".delete-supplier-btn").forEach(button => {
-    button.addEventListener("click", (event) => {
-        event.target.closest(".supplier-card").remove();
-        showToast("Fornecedor removido.");
+const togglePassword =
+document.getElementById(
+"togglePassword"
+);
+
+const userPassword =
+document.getElementById(
+"userPassword"
+);
+
+if(togglePassword){
+
+    togglePassword.addEventListener(
+    "click",
+
+    () => {
+
+        const isPassword =
+        userPassword.type === "password";
+
+        userPassword.type =
+        isPassword
+        ? "text"
+        : "password";
+
+        togglePassword.textContent =
+        isPassword
+        ? "🙈"
+        : "👁";
+
     });
-});
 
-// Seleciona os botões
-const monthButtons = document.querySelectorAll('.month-btn');
+}
 
-monthButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Estilo visual: remove active de todos e coloca no clicado
-        monthButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+const backupNow =
+document.getElementById(
+"backupNow"
+);
 
-        const mes = button.dataset.month;
-        const dados = relatoriosMensais[mes];
+if(backupNow){
 
-        if (dados) {
-            // Atualiza os textos na tela usando os IDs que criamos no HTML
-            document.getElementById('kpi-vendidos').textContent = dados.produtosVendidos;
-            document.getElementById('kpi-faturamento').textContent = dados.faturamento;
-            document.getElementById('kpi-lucro').textContent = dados.lucroLiquido;
+    backupNow.addEventListener(
+    "click",
 
-            // Atualiza o gráfico de barras
-            if (window.managerChartInstance) {
-                window.managerChartInstance.data.datasets[0].data = dados.graficoVendas;
-                window.managerChartInstance.update(); // Faz a animação de mudança
-            }
-            
-            showToast(`Mês ${mes} carregado com sucesso!`);
+    () => {
+
+        const now =
+        new Date();
+
+        document.getElementById(
+        "lastBackup"
+        ).textContent =
+        now.toLocaleDateString("pt-BR") +
+        " " +
+        now.toLocaleTimeString(
+        "pt-BR",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
         }
+        );
+
+        showToast(
+        "Backup realizado com sucesso."
+        );
+
     });
-});
+
+}
+
+const saveSettings =
+document.getElementById(
+"saveSettings"
+);
+
+if(saveSettings){
+
+    saveSettings.addEventListener(
+    "click",
+
+    () => {
+
+        const firstName =
+        document.getElementById(
+        "firstName"
+        ).value.trim();
+
+        const lastName =
+        document.getElementById(
+        "lastName"
+        ).value.trim();
+
+        const fullName =
+        `${firstName} ${lastName}`.trim() ||
+        "Manuella Pedrotti";
+
+        const companyName =
+        document.getElementById(
+        "companyName"
+        );
+
+        companyName.value =
+        companyName.value.trim() ||
+        fullName;
+
+        const profileName =
+        document.querySelector(
+        ".profile-name"
+        );
+
+        const profileEmail =
+        document.querySelector(
+        ".profile-email"
+        );
+
+        const userEmailInput =
+        document.getElementById(
+        "userEmail"
+        );
+
+        profileName.textContent =
+        fullName;
+
+        profileEmail.textContent =
+        userEmailInput.value;
+
+        document.querySelector(
+        ".user-area span"
+        ).textContent =
+        `Olá, gestora ${firstName || "Manuella"}`;
+
+        showToast(
+        "Configurações salvas."
+        );
+
+    });
+
+}
+
+const changePhotoBtn =
+document.getElementById(
+"changePhotoBtn"
+);
+
+if(changePhotoBtn){
+
+    changePhotoBtn.addEventListener(
+    "click",
+
+    () => {
+
+        showToast(
+        "Foto de perfil pronta para atualização."
+        );
+
+    });
+
+}
+
+/* ===========================
+   FORNECEDORES
+=========================== */
+
+const suppliersBody =
+document.getElementById(
+"suppliersBody"
+);
+
+const supplierSearch =
+document.getElementById(
+"supplierSearch"
+);
+
+const emptySuppliers =
+document.getElementById(
+"emptySuppliers"
+);
+
+function escapeHTML(value){
+
+    return value
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+function updateSupplierStats(){
+
+    if(!suppliersBody)
+        return;
+
+    const rows =
+    [...suppliersBody.querySelectorAll("tr")];
+
+    const active =
+    rows.filter(row =>
+        row.querySelector(".status-pill")
+        .textContent.trim() === "Ativo"
+    ).length;
+
+    const inactive =
+    rows.filter(row =>
+        row.querySelector(".status-pill")
+        .textContent.trim() === "Inativo"
+    ).length;
+
+    const pending =
+    rows.filter(row =>
+        row.querySelector(".status-pill")
+        .textContent.trim() === "Pendente"
+    ).length;
+
+    document.getElementById(
+    "supplierTotal"
+    ).textContent = rows.length;
+
+    document.getElementById(
+    "supplierActive"
+    ).textContent = active;
+
+    document.getElementById(
+    "supplierInactive"
+    ).textContent = inactive;
+
+    document.getElementById(
+    "supplierPending"
+    ).textContent = pending;
+
+}
+
+function filterSuppliers(){
+
+    if(!supplierSearch || !suppliersBody)
+        return;
+
+    const search =
+    supplierSearch.value
+    .trim()
+    .toLowerCase();
+
+    let visibleRows = 0;
+
+    suppliersBody
+    .querySelectorAll("tr")
+    .forEach(row => {
+
+        const shouldShow =
+        row.textContent
+        .toLowerCase()
+        .includes(search);
+
+        row.style.display =
+        shouldShow
+        ? ""
+        : "none";
+
+        if(shouldShow)
+            visibleRows++;
+
+    });
+
+    emptySuppliers.style.display =
+    visibleRows
+    ? "none"
+    : "block";
+
+}
+
+function bindSupplierRow(row){
+
+    const editButton =
+    row.querySelector(".supplier-edit");
+
+    const deleteButton =
+    row.querySelector(".supplier-delete");
+
+    editButton.addEventListener(
+    "click",
+
+    () => {
+
+        const nameElement =
+        row.querySelector(".supplier-company strong");
+
+        const contactCell =
+        row.children[1];
+
+        const emailCell =
+        row.children[2];
+
+        const newName =
+        prompt(
+        "Nome do fornecedor:",
+        nameElement.textContent
+        );
+
+        if(newName === null)
+            return;
+
+        const newContact =
+        prompt(
+        "Contato:",
+        contactCell.textContent
+        );
+
+        if(newContact === null)
+            return;
+
+        const newEmail =
+        prompt(
+        "E-mail:",
+        emailCell.textContent
+        );
+
+        if(newEmail === null)
+            return;
+
+        nameElement.textContent =
+        newName.trim() || "Casa Prado";
+
+        contactCell.textContent =
+        newContact.trim() || "Rafael Lima";
+
+        emailCell.textContent =
+        newEmail.trim() ||
+        "rafael.lima@casaprado.com.br";
+
+        filterSuppliers();
+
+        showToast(
+        "Fornecedor atualizado."
+        );
+
+    });
+
+    deleteButton.addEventListener(
+    "click",
+
+    () => {
+
+        if(
+            !confirm(
+            "Excluir este fornecedor?"
+            )
+        ){
+            return;
+        }
+
+        row.remove();
+        updateSupplierStats();
+        filterSuppliers();
+
+        showToast(
+        "Fornecedor removido."
+        );
+
+    });
+
+}
+
+function addSupplierRow(
+name = "Casa Prado",
+contact = "Rafael Lima",
+email = "rafael.lima@casaprado.com.br",
+phone = "+55 (65) 99999-9999",
+products = "48",
+status = "Ativo"
+){
+
+    const row =
+    document.createElement("tr");
+
+    const id =
+    suppliersBody
+    .querySelectorAll("tr").length + 1;
+
+    const statusClass =
+    status === "Inativo"
+    ? "inactive"
+    : status === "Pendente"
+    ? "pending"
+    : "active";
+
+    row.innerHTML = `
+    <td>
+        <div class="supplier-company">
+            <span class="company-icon">🏬</span>
+            <div>
+                <strong>${escapeHTML(name)}</strong>
+                <small>ID: FOR-${String(id).padStart(3,"0")}</small>
+            </div>
+        </div>
+    </td>
+    <td>${escapeHTML(contact)}</td>
+    <td>${escapeHTML(email)}</td>
+    <td>${escapeHTML(phone)}</td>
+    <td>${escapeHTML(products)}</td>
+    <td><span class="status-pill ${statusClass}">${escapeHTML(status)}</span></td>
+    <td>
+        <div class="table-actions">
+            <button type="button" class="supplier-edit" title="Editar fornecedor">✎</button>
+            <button type="button" class="supplier-delete" title="Excluir fornecedor">🗑</button>
+        </div>
+    </td>
+    `;
+
+    suppliersBody.appendChild(row);
+    bindSupplierRow(row);
+    updateSupplierStats();
+    filterSuppliers();
+
+}
+
+if(supplierSearch){
+
+    supplierSearch.addEventListener(
+    "input",
+    filterSuppliers
+    );
+
+}
+
+if(suppliersBody){
+
+    suppliersBody
+    .querySelectorAll("tr")
+    .forEach(bindSupplierRow);
+
+    updateSupplierStats();
+
+}
+
+const addSupplier =
+document.getElementById(
+"addSupplier"
+);
+
+if(addSupplier){
+
+    addSupplier.addEventListener(
+    "click",
+
+    () => {
+
+        const name =
+        prompt(
+        "Nome do fornecedor:",
+        "Casa Prado"
+        );
+
+        if(name === null)
+            return;
+
+        const contact =
+        prompt(
+        "Contato:",
+        "Rafael Lima"
+        );
+
+        if(contact === null)
+            return;
+
+        const email =
+        prompt(
+        "E-mail:",
+        "rafael.lima@casaprado.com.br"
+        );
+
+        if(email === null)
+            return;
+
+        addSupplierRow(
+        name.trim() || "Casa Prado",
+        contact.trim() || "Rafael Lima",
+        email.trim() ||
+        "rafael.lima@casaprado.com.br"
+        );
+
+        showToast(
+        "Fornecedor adicionado."
+        );
+
+    });
+
+}
+
+const exportSupplier =
+document.getElementById(
+"exportSupplier"
+);
+
+if(exportSupplier){
+
+    exportSupplier.addEventListener(
+    "click",
+
+    () => {
+
+        const rows =
+        [...suppliersBody.querySelectorAll("tr")]
+        .map(row => [
+            row.querySelector(".supplier-company strong")
+            .textContent,
+            row.children[1].textContent,
+            row.children[2].textContent,
+            row.children[3].textContent,
+            row.children[4].textContent,
+            row.querySelector(".status-pill")
+            .textContent
+        ]);
+
+        const csv =
+        [
+            [
+                "Empresa",
+                "Contato",
+                "E-mail",
+                "Telefone",
+                "Produtos",
+                "Status"
+            ],
+            ...rows
+        ]
+        .map(line =>
+            line
+            .map(value => `"${value.replaceAll('"','""')}"`)
+            .join(",")
+        )
+        .join("\n");
+
+        const blob =
+        new Blob(
+        [csv],
+        {
+            type:"text/csv;charset=utf-8"
+        }
+        );
+
+        const link =
+        document.createElement("a");
+
+        link.href =
+        URL.createObjectURL(blob);
+
+        link.download =
+        "fornecedores.csv";
+
+        link.click();
+
+        URL.revokeObjectURL(
+        link.href
+        );
+
+        showToast(
+        "Lista exportada."
+        );
+
+    });
+
+}
+
+const importSupplier =
+document.getElementById(
+"importSupplier"
+);
+
+if(importSupplier){
+
+    importSupplier.addEventListener(
+    "click",
+
+    () => {
+
+        addSupplierRow();
+
+        showToast(
+        "Fornecedor importado como exemplo."
+        );
+
+    });
+
+}

@@ -39,10 +39,6 @@
                 Relatórios
             </button>
 
-            <button class="menu-item" data-page="alertas">
-                Alertas
-            </button>
-
             <button class="menu-item" data-page="ia">
                 IA BuyFlow
             </button>
@@ -79,110 +75,201 @@
 
         <section id="dashboard" class="page active-page">
 
-            <h2>Dashboard</h2>
-
-            <div class="kpis">
-
-                <div class="card">
-                    <h3>Faturamento</h3>
-                    <p id="faturamento">124500</p>
+            <div class="dashboard-header">
+                <div>
+                    <span class="section-label">Visão geral</span>
+                    <h2>Dashboard</h2>
                 </div>
+            </div>
 
-                <div class="card">
-                    <h3>Lucro</h3>
-                    <p id="lucro">107000</p>
-                </div>
+            <div class="dashboard-stats">
 
-                <div class="card">
-                    <h3>Gastos</h3>
-                    <p id="gastos">86300</p>
-                </div>
+                <article class="dashboard-stat-card">
+                    <div>
+                        <small>Total de Produtos</small>
+                        <strong id="dashboardTotalProducts">1.248</strong>
+                        <span class="positive-change">↑ 12.5% vs último mês</span>
+                    </div>
+                    <span class="dashboard-stat-icon">▣</span>
+                </article>
 
-                <div class="card">
-                    <h3>Produtos</h3>
-                    <p id="totalProdutos">1</p>
-                </div>
+                <article class="dashboard-stat-card">
+                    <div>
+                        <small>Estoque Baixo</small>
+                        <strong>47</strong>
+                        <span class="negative-change">↑ 5% vs último mês</span>
+                    </div>
+                    <span class="dashboard-stat-icon danger">▲</span>
+                </article>
+
+                <article class="dashboard-stat-card">
+                    <div>
+                        <small>Valor Total</small>
+                        <strong id="dashboardTotalValue">R$ 1.284,75</strong>
+                        <span class="positive-change">↑ 8.5% vs último mês</span>
+                    </div>
+                    <span class="dashboard-stat-icon money">$</span>
+                </article>
+
+                <article class="dashboard-stat-card">
+                    <div>
+                        <small>Fornecedores</small>
+                        <strong>32</strong>
+                        <span class="positive-change">↑ 12 novos este mês</span>
+                    </div>
+                    <span class="dashboard-stat-icon supplier">♟</span>
+                </article>
 
             </div>
 
-            <div class="charts">
-
-                <div class="chart-card">
+            <div class="dashboard-charts-grid">
+                <article class="dashboard-panel stock-panel">
+                    <header class="dashboard-panel-header">
+                        <h3>Controle de Estoque</h3>
+                        <div class="period-tabs">
+                            <button type="button" class="active">Mês</button>
+                            <button type="button">Semana</button>
+                            <button type="button">Dia</button>
+                        </div>
+                    </header>
                     <canvas id="salesChart"></canvas>
-                </div>
+                </article>
 
-                <div class="chart-card">
-                    <canvas id="profitChart"></canvas>
-                </div>
-
+                <article class="dashboard-panel category-panel">
+                    <h3>Categorias</h3>
+                    <canvas id="categoryChart"></canvas>
+                </article>
             </div>
 
-            <div class="critical-products">
+            <div class="dashboard-bottom-grid">
+                <article class="dashboard-panel activity-panel">
+                    <h3>Atividades recentes</h3>
 
-                <div class="table-container">
+                    <div class="activity-item">
+                        <span class="activity-icon">+</span>
+                        <div>
+                            <strong>Novo fornecedor</strong>
+                            <small>Casa Prado - 2 horas atrás</small>
+                        </div>
+                    </div>
 
-                    <h3>Produtos Críticos</h3>
+                    <div class="activity-item">
+                        <span class="activity-icon">✓</span>
+                        <div>
+                            <strong>Compra realizada</strong>
+                            <small>Pedido de camisetas polo - 4 horas atrás</small>
+                        </div>
+                    </div>
 
-                    <table>
+                    <div class="activity-item">
+                        <span class="activity-icon">✉</span>
+                        <div>
+                            <strong>Nova mensagem</strong>
+                            <small>Jaquetas jeans - 6 horas atrás</small>
+                        </div>
+                    </div>
 
+                    <div class="activity-item">
+                        <span class="activity-icon">!</span>
+                        <div>
+                            <strong>Atualização do sistema</strong>
+                            <small>BuyFlow v1.0.0 - 1 dia atrás</small>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dashboard-panel stock-status-panel">
+                    <header class="dashboard-panel-header">
+                        <h3>Status do Estoque</h3>
+                        <button type="button">Ver todos</button>
+                    </header>
+
+                    <table class="dashboard-stock-table">
                         <thead>
                             <tr>
                                 <th>Produto</th>
-                                <th>Estoque</th>
+                                <th>Código</th>
+                                <th>Categoria</th>
+                                <th>Estoque Total</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-
                         <tbody>
-
                             <tr>
-                                <td>Camiseta Básica</td>
-                                <td>8</td>
-                                <td>Crítico</td>
+                                <td>
+                                    <div class="stock-product">
+                                        <span>▣</span>
+                                        <div>
+                                            <strong>Jaqueta Bomber Masculina</strong>
+                                            <small>#SKU - 1234</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>PRD-001</td>
+                                <td>Jaquetas</td>
+                                <td>
+                                    <span>48 unidades</span>
+                                    <div class="stock-bar"><span style="width:78%"></span></div>
+                                </td>
+                                <td><span class="stock-badge stable">Estável</span></td>
                             </tr>
-
                             <tr>
-                                <td>Calça Jeans</td>
-                                <td>12</td>
-                                <td>Baixo</td>
+                                <td>
+                                    <div class="stock-product">
+                                        <span>▣</span>
+                                        <div>
+                                            <strong>Camiseta Polo Piquet</strong>
+                                            <small>#SKU - 5678</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>PRD-002</td>
+                                <td>Camisetas Polo</td>
+                                <td>
+                                    <span>5 unidades</span>
+                                    <div class="stock-bar danger"><span style="width:12%"></span></div>
+                                </td>
+                                <td><span class="stock-badge critical">Crítico</span></td>
                             </tr>
-
+                            <tr>
+                                <td>
+                                    <div class="stock-product">
+                                        <span>▣</span>
+                                        <div>
+                                            <strong>Calça Jeans Slim</strong>
+                                            <small>#SKU - 9012</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>PRD-003</td>
+                                <td>Calças Jeans</td>
+                                <td>
+                                    <span>12 unidades</span>
+                                    <div class="stock-bar warning"><span style="width:28%"></span></div>
+                                </td>
+                                <td><span class="stock-badge warning">Atenção</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stock-product">
+                                        <span>▣</span>
+                                        <div>
+                                            <strong>Camisa Social Oxford</strong>
+                                            <small>#SKU - 3456</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>PRD-004</td>
+                                <td>Camisas Sociais</td>
+                                <td>
+                                    <span>32 unidades</span>
+                                    <div class="stock-bar"><span style="width:64%"></span></div>
+                                </td>
+                                <td><span class="stock-badge stable">Estável</span></td>
+                            </tr>
                         </tbody>
-
                     </table>
-                </div>
-            </div>
-
-            <div class="top-products">
-
-                <h3>Produtos Mais Vendidos</h3>
-                
-                <div class="table-container">
-                    <table>
-
-                        <tr>
-                            <th>Produto</th>
-                            <th>Vendas</th>
-                        </tr>
-
-                        <tr>
-                            <td>Camiseta Oversized</td>
-                            <td>420</td>
-                        </tr>
-
-                        <tr>
-                            <td>Calça Jeans</td>
-                            <td>311</td>
-                        </tr>
-
-                    </table>
-                </div>
-            </div>
-
-            <br>
-
-            <div class="chart-card">
-                <canvas id="lucroGastosChart"></canvas>
+                </article>
             </div>
 
         </section>
@@ -191,64 +278,257 @@
 
         <section id="inventario" class="page">
 
-            <h2>Inventário</h2>
+            <div class="inventory-page-header">
+                <div>
+                    <span class="section-label">Gestão de produtos</span>
+                    <h2>Inventário</h2>
+                </div>
 
-            <div class="inventory-tools">
-
-                <input
-                    id="searchProduct"
-                    type="text"
-                    placeholder="Buscar produto..."
-                >
-
-                <button type="button" id="addProductButton">
-                    Novo Produto
-                </button>
-
+                <label class="inventory-search">
+                    <span>🔎</span>
+                    <input
+                        id="searchProduct"
+                        type="search"
+                        placeholder="Buscar produtos...">
+                </label>
             </div>
 
-            <div class="table-container">
+            <div class="inventory-stats">
+                <article class="inventory-stat-card">
+                    <div>
+                        <small>Total de Produtos</small>
+                        <strong id="inventoryTotal">8</strong>
+                    </div>
+                    <span class="inventory-stat-icon">▣</span>
+                </article>
 
-                <table id="inventoryTable">
+                <article class="inventory-stat-card">
+                    <div>
+                        <small>Produtos Ativos</small>
+                        <strong id="inventoryActive">6</strong>
+                    </div>
+                    <span class="inventory-stat-icon">✓</span>
+                </article>
 
+                <article class="inventory-stat-card">
+                    <div>
+                        <small>Produtos Inativos</small>
+                        <strong id="inventoryInactive">1</strong>
+                    </div>
+                    <span class="inventory-stat-icon danger">×</span>
+                </article>
+
+                <article class="inventory-stat-card">
+                    <div>
+                        <small>Fora de Estoque</small>
+                        <strong id="inventoryOut">1</strong>
+                    </div>
+                    <span class="inventory-stat-icon">!</span>
+                </article>
+            </div>
+
+            <div class="inventory-list-header">
+                <div>
+                    <h3>Inventário de produtos</h3>
+                    <p>Gerencie seus itens de estoque e níveis de inventário</p>
+                </div>
+
+                <div class="inventory-actions">
+                    <button type="button" class="light-action" id="importProducts">Importar</button>
+                    <button type="button" class="light-action" id="exportProducts">Exportar</button>
+                    <button type="button" class="dark-action" id="addProductButton">+ Adicionar Produto</button>
+                </div>
+            </div>
+
+            <div class="inventory-table-card">
+                <table id="inventoryTable" class="inventory-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Produto</th>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Fornecedor</th>
                             <th>Categoria</th>
-                            <th>Preço</th>
-                            <th>Estoque</th>
+                            <th>Valor</th>
                             <th>Status</th>
-                            <th>Ações</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
 
                     <tbody id="inventoryBody">
-
-                        <tr>
-                            <td>001</td>
-                            <td>Camiseta Oversized</td>
-                            <td>Camisetas</td>
-                            <td>R$ 89</td>
-                            <td>35</td>
-                            <td>OK</td>
-
+                        <tr data-stock="35">
                             <td>
-
-                                <button class="edit-btn">
-                                    ✏️
-                                </button>
-
-                                <button class="delete-btn">
-                                    🗑️
-                                </button>
-
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Jaqueta Bomber Masculina</strong>
+                                </div>
+                            </td>
+                            <td>PRD-001</td>
+                            <td>Jaqueta bomber em tecido resistente com bolsos frontais</td>
+                            <td>Casa Prado</td>
+                            <td>Jaquetas</td>
+                            <td>R$ 249,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
                             </td>
                         </tr>
 
-                    </tbody>
+                        <tr data-stock="28">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Camiseta Polo Piquet</strong>
+                                </div>
+                            </td>
+                            <td>PRD-002</td>
+                            <td>Camiseta polo masculina em algodão piquet com gola estruturada</td>
+                            <td>Casa Prado</td>
+                            <td>Camisetas Polo</td>
+                            <td>R$ 119,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
 
+                        <tr data-stock="0">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Calça Jeans Slim</strong>
+                                </div>
+                            </td>
+                            <td>PRD-003</td>
+                            <td>Calça jeans masculina com lavagem escura e corte slim</td>
+                            <td>Casa Prado</td>
+                            <td>Calças Jeans</td>
+                            <td>R$ 189,90</td>
+                            <td><span class="inventory-status inactive">Inativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-stock="18">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Camisa Social Oxford</strong>
+                                </div>
+                            </td>
+                            <td>PRD-004</td>
+                            <td>Camisa social masculina em tecido oxford para uso executivo</td>
+                            <td>Casa Prado</td>
+                            <td>Camisas Sociais</td>
+                            <td>R$ 159,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-stock="42">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Blazer Casual Masculino</strong>
+                                </div>
+                            </td>
+                            <td>PRD-005</td>
+                            <td>Blazer casual masculino com modelagem moderna e forro leve</td>
+                            <td>Casa Prado</td>
+                            <td>Blazers</td>
+                            <td>R$ 329,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-stock="24">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Bermuda Chino Masculina</strong>
+                                </div>
+                            </td>
+                            <td>PRD-006</td>
+                            <td>Bermuda chino masculina em sarja leve com bolso faca</td>
+                            <td>Casa Prado</td>
+                            <td>Bermudas</td>
+                            <td>R$ 129,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-stock="11">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Suéter Tricot Masculino</strong>
+                                </div>
+                            </td>
+                            <td>PRD-007</td>
+                            <td>Suéter masculino em tricot macio com acabamento canelado</td>
+                            <td>Casa Prado</td>
+                            <td>Suéteres</td>
+                            <td>R$ 179,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-stock="33">
+                            <td>
+                                <div class="inventory-product">
+                                    <span class="product-icon">▣</span>
+                                    <strong>Jaqueta Jeans Masculina</strong>
+                                </div>
+                            </td>
+                            <td>PRD-008</td>
+                            <td>Jaqueta jeans masculina com lavagem média e fechamento por botões</td>
+                            <td>Casa Prado</td>
+                            <td>Jaquetas</td>
+                            <td>R$ 219,90</td>
+                            <td><span class="inventory-status active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                                    <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
+
+                <p class="empty-products" id="emptyProducts">
+                    Nenhum produto encontrado.
+                </p>
             </div>
 
             <div id="productModal" class="modal">
@@ -278,6 +558,17 @@
                         placeholder="Categoria">
 
                     <input
+                        id="productDescription"
+                        type="text"
+                        placeholder="Descrição">
+
+                    <input
+                        id="productSupplier"
+                        type="text"
+                        value="Casa Prado"
+                        placeholder="Fornecedor">
+
+                    <input
                         id="productPrice"
                         type="number"
                         placeholder="Preço">
@@ -298,67 +589,114 @@
         </section>
 
         <!-- FORNECEDORES -->
+
         <section id="fornecedores" class="page">
 
-            <div class="page-header">
-                <h2>Fornecedores</h2>
-                <button type="button" id="addSupplierBtn" class="add-btn">
-                    Novo Fornecedor
-                </button>
+            <div class="suppliers-page-header">
+                <div>
+                    <span class="section-label">Gestão de fornecedores</span>
+                    <h2>Fornecedores</h2>
+                </div>
+
+                <label class="supplier-search">
+                    <span>🔎</span>
+                    <input
+                        id="supplierSearch"
+                        type="search"
+                        placeholder="Buscar fornecedores...">
+                </label>
             </div>
 
-            <div class="supplier-grid" id="supplierGrid">
+            <div class="supplier-stats">
+                <article class="supplier-stat-card">
+                    <div>
+                        <small>Total de fornecedores</small>
+                        <strong id="supplierTotal">1</strong>
+                    </div>
+                    <span class="stat-icon blue">🚚</span>
+                </article>
 
-                <div class="supplier-card">
-                    <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
-                    <h3>Tecidos Brasil</h3>
-                    <p>Entrega média: 4 dias</p>
-                    <p>Avaliação: ⭐⭐⭐⭐⭐</p>
-                </div>
+                <article class="supplier-stat-card">
+                    <div>
+                        <small>Fornecedores Ativos</small>
+                        <strong id="supplierActive">1</strong>
+                    </div>
+                    <span class="stat-icon green">✓</span>
+                </article>
 
-                <div class="supplier-card">
-                    <button class="delete-supplier-btn" title="Remover Fornecedor">🗑️</button>
-                    <h3>Fashion Supply</h3>
-                    <p>Entrega média: 7 dias</p>
-                    <p>Avaliação: ⭐⭐⭐⭐</p>
-                </div>
+                <article class="supplier-stat-card">
+                    <div>
+                        <small>Fornecedores Inativos</small>
+                        <strong id="supplierInactive">0</strong>
+                    </div>
+                    <span class="stat-icon red">×</span>
+                </article>
 
+                <article class="supplier-stat-card">
+                    <div>
+                        <small>Fornecedores Pendentes</small>
+                        <strong id="supplierPending">0</strong>
+                    </div>
+                    <span class="stat-icon yellow">!</span>
+                </article>
             </div>
 
-            <!-- Tela do novo fornecedor -->
-            <div id="supplierModal" class="modal">
-                <div class="modal-content">
-                    
-                    <button id="closeSupplierModal" class="close-modal-btn">✖</button>
+            <div class="supplier-list-header">
+                <div>
+                    <h3>Lista de fornecedores</h3>
+                    <p>Gerencie seus fornecedores e relacionamento com vendedores</p>
+                </div>
 
-                    <h2 id="modalTitle">Novo Fornecedor</h2>
-
-                    <input id="supplierName" type="text" placeholder="Nome da Empresa">
-                    <input id="supplierDelivery" type="number" placeholder="Dias de entrega (ex: 5)">
-                    <input id="supplierRating" type="number" placeholder="Avaliação de 1 a 5" min="1" max="5">
-
-                    <button id="saveSupplier">Salvar</button>
+                <div class="supplier-actions">
+                    <button type="button" class="light-action" id="importSupplier">Importar</button>
+                    <button type="button" class="light-action" id="exportSupplier">Exportar</button>
+                    <button type="button" class="dark-action" id="addSupplier">+ Adicionar fornecedor</button>
                 </div>
             </div>
 
-        </section>
+            <div class="suppliers-table-card">
+                <table class="suppliers-table">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Contato</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Produtos</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
 
-            <!-- tela para novo fornecedor -->
-            <div id="supplierModal" class="modal">
-                <div class="modal-content">
-                    
-                    <h2 id="modalTitle">Novo Fornecedor</h2>
-                    
-                    <button id="closeSupplierModal">✖</button>
+                    <tbody id="suppliersBody">
+                        <tr>
+                            <td>
+                                <div class="supplier-company">
+                                    <span class="company-icon">🏬</span>
+                                    <div>
+                                        <strong>Casa Prado</strong>
+                                        <small>ID: FOR-001</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Rafael Lima</td>
+                            <td>rafael.lima@casaprado.com.br</td>
+                            <td>+55 (65) 99999-9999</td>
+                            <td>48</td>
+                            <td><span class="status-pill active">Ativo</span></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button type="button" class="supplier-edit" title="Editar fornecedor">✎</button>
+                                    <button type="button" class="supplier-delete" title="Excluir fornecedor">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                    <input id="supplierName" type="text" placeholder="Nome da Empresa">
-                    
-                    <input id="supplierDelivery" type="number" placeholder="Dias de entrega (ex: 5)">
-                    
-                    <input id="supplierRating" type="number" placeholder="Avaliação de 1 a 5" min="1" max="5">
-
-                    <button id="saveSupplier">Salvar</button>
-                </div>
+                <p class="empty-suppliers" id="emptySuppliers">
+                    Nenhum fornecedor encontrado.
+                </p>
             </div>
 
         </section>
@@ -366,86 +704,94 @@
         <!-- RELATÓRIOS -->
 
         <section id="relatorios" class="page">
-            <div class="report-header">
-                <div class="filters-years">
-                    <button class="year-btn active" data-year="2026">2026</button>
-                </div>
-                <div class="filters-months">
-                    <button class="month-btn" data-month="1">1</button>
-                    <button class="month-btn" data-month="2">2</button>
-                    <button class="month-btn" data-month="3">3</button>
-                    <button class="month-btn" data-month="4">4</button>
-                    <button class="month-btn" data-month="5">5</button>
-                    <button class="month-btn" data-month="6">6</button>
-                </div>
-            </div>
 
-            <div class="report-container">
-                <!-- Coluna de KPIs da Esquerda (Valores conforme sua imagem) -->
-                <div class="report-kpis-grid">
-                    <div class="mini-card"><h4>Produtos Vendidos</h4><p id="kpi-vendidos">1.248</p></div>
-                    <div class="mini-card"><h4>Faturamento Total</h4><p id="kpi-faturamento" class="blue">R$ 124.500</p></div>
-                    
-                    <div class="mini-card"><h4>Pedidos Realizados</h4><p>356</p></div>
-                    <div class="mini-card"><h4>Ticket Médio</h4><p class="green">R$ 349,72</p></div>
-                    
-                    <div class="mini-card"><h4>Produtos com Estoque Baixo</h4><p class="purple">12</p></div>
-                    <div class="mini-card"><h4>Gastos Operacionais</h4><p class="purple">R$ 86.300</p></div>
-                    
-                    <div class="mini-card"><h4>Taxa de Ruptura de Estoque</h4><p class="purple">3,2%</p></div>
-                    <div class="mini-card"><h4>Margem de Lucro</h4><p class="purple">14,1%</p></div>
-
-                    <div class="mini-card"><h4>Produtos em Estoque</h4><p class="blue">1.573</p></div>
-                    <div class="mini-card"><h4>Lucro Líquido</h4><p id="kpi-lucro" class="blue">R$ 107.000</p></div>
+            <div class="reports-header">
+                <div>
+                    <span class="section-label">Relatórios</span>
+                    <h2>Relatórios</h2>
                 </div>
 
-                <!-- Coluna de Gráficos da Direita -->
-                <div class="report-charts-area">
-                    <div class="chart-card-full">
-                        <h4>Produtos Mais Vendidos</h4>
-                        <canvas id="managerChart"></canvas>
+                <div class="report-periods" aria-label="Filtros do relatório">
+                    <div class="report-years">
+                        <button type="button" class="active" data-report-year="2026">2026</button>
                     </div>
-                    <div class="report-bottom-charts">
-                        <div class="chart-mini">
-                            <h4>Distribuição do Estoque</h4>
-                            <canvas id="planChart"></canvas>
-                        </div>
-                        <div class="chart-mini">
-                            <h4>Problemas de Estoque</h4>
-                            <canvas id="churnReasonChart"></canvas>
-                        </div>
+
+                    <div class="report-months">
+                        <button type="button" class="active" data-report-month="1">1</button>
+                        <button type="button" data-report-month="2">2</button>
+                        <button type="button" data-report-month="3">3</button>
+                        <button type="button" data-report-month="4">4</button>
+                        <button type="button" data-report-month="5">5</button>
+                        <button type="button" data-report-month="6">6</button>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ALERTAS -->
+            <div class="reports-layout">
 
-        <section id="alertas" class="page">
+                <div class="report-kpis" aria-label="Métricas individuais">
 
-            <h2>Alertas Inteligentes</h2>
+                    <article class="report-metric">
+                        <span>Produtos vendidos</span>
+                        <strong id="reportSoldProducts">0</strong>
+                    </article>
 
-            <div class="alert-card">
+                    <article class="report-metric">
+                        <span>Faturamento Total</span>
+                        <strong id="reportRevenue">R$ 0</strong>
+                    </article>
 
-                <h3>Reposição Necessária</h3>
+                    <article class="report-metric">
+                        <span>Pedidos Realizados</span>
+                        <strong id="reportOrders">0</strong>
+                    </article>
 
-                <p>
-                    Camiseta Básica está abaixo do estoque ideal.
-                </p>
+                    <article class="report-metric">
+                        <span>Ticket Médio</span>
+                        <strong id="reportAverageTicket">R$ 0</strong>
+                    </article>
 
-                <p>
-                    Sugestão: comprar +50 unidades.
-                </p>
+                    <article class="report-metric">
+                        <span>Produtos com estoque baixo</span>
+                        <strong id="reportLowStock">0</strong>
+                    </article>
 
-            </div>
+                    <article class="report-metric">
+                        <span>Gastos Operacionais</span>
+                        <strong id="reportCosts">R$ 0</strong>
+                    </article>
 
-            <div class="alert-card">
+                    <article class="report-metric">
+                        <span>Taxa de Ruptura de Estoque</span>
+                        <strong id="reportStockoutRate">0%</strong>
+                    </article>
 
-                <h3>Excesso de Estoque</h3>
+                    <article class="report-metric">
+                        <span>Margem de lucro</span>
+                        <strong id="reportProfitMargin">0%</strong>
+                    </article>
 
-                <p>
-                    Jaqueta Premium possui baixo giro.
-                </p>
+                    <article class="report-metric">
+                        <span>Produtos em Estoque</span>
+                        <strong id="reportStockProducts">0</strong>
+                    </article>
+
+                    <article class="report-metric">
+                        <span>Lucro Líquido</span>
+                        <strong id="reportNetProfit">R$ 0</strong>
+                    </article>
+
+                </div>
+
+                <article class="report-chart-card report-best-sellers">
+                    <h3>Produtos mais vendidos</h3>
+                    <canvas id="bestSellersChart"></canvas>
+                </article>
+
+                <article class="report-chart-card report-stock-distribution">
+                    <h3>Distribuição de estoque</h3>
+                    <canvas id="stockDistributionChart"></canvas>
+                </article>
 
             </div>
 
@@ -501,37 +847,248 @@
 
         <section id="configuracoes" class="page">
 
-            <h2>Configurações</h2>
+            <div class="settings-header">
+                <div>
+                    <span class="section-label">Painel Administrativo</span>
+                    <h2>Configurações</h2>
+                </div>
 
-            <form>
-
-                <label>
-                    Nome da Loja
-                </label>
-
-                <input
-                    type="text"
-                    value="Casa Prado"
-                >
-
-                <label>
-                    Estoque Mínimo
-                </label>
-
-                <input
-                    type="number"
-                    value="20"
-                >
-
-                <button
-                    type="button"
-                    id="saveSettings">
-
+                <button type="button" class="primary-action" id="saveSettings">
                     Salvar Alterações
-
                 </button>
+            </div>
 
-            </form>
+            <div class="settings-layout">
+
+                <div class="settings-main">
+
+                    <article class="settings-panel">
+                        <header class="panel-header">
+                            <span class="panel-icon">⚙</span>
+                            <h3>Configurações do Sistema</h3>
+                        </header>
+
+                        <div class="settings-grid">
+                            <label class="field-group">
+                                Nome da Empresa
+                                <input id="companyName" type="text" value="Manuella Pedrotti">
+                            </label>
+
+                            <label class="field-group">
+                                Moeda Padrão
+                                <select id="defaultCurrency">
+                                    <option>Real Brasileiro (R$)</option>
+                                    <option>Dólar Americano (US$)</option>
+                                    <option>Euro (€)</option>
+                                </select>
+                            </label>
+
+                            <label class="field-group">
+                                Fuso Horário
+                                <select id="timezone">
+                                    <option>(UTC-03:00) Brasília</option>
+                                    <option>(UTC-04:00) Cuiabá</option>
+                                    <option>(UTC-03:00) São Paulo</option>
+                                </select>
+                            </label>
+
+                            <label class="field-group">
+                                Formato de Data
+                                <select id="dateFormat">
+                                    <option>DD/MM/YYYY</option>
+                                    <option>MM/DD/YYYY</option>
+                                    <option>YYYY-MM-DD</option>
+                                </select>
+                            </label>
+
+                            <label class="field-group full-width">
+                                Endereço da Empresa
+                                <input id="companyAddress" type="text" value="Av. Comercial, 120 - Centro/MT">
+                            </label>
+                        </div>
+                    </article>
+
+                    <article class="settings-panel">
+                        <header class="panel-header">
+                            <span class="panel-icon">📦</span>
+                            <h3>Configurações do Estoque</h3>
+                        </header>
+
+                        <div class="setting-line">
+                            <div>
+                                <strong>Alertas de Estoque Baixo</strong>
+                                <small>Ativar notificações quando produtos atingirem níveis mínimos</small>
+                            </div>
+                            <button type="button" class="toggle active" aria-pressed="true"></button>
+                        </div>
+
+                        <div class="settings-grid">
+                            <label class="field-group">
+                                Nível Mínimo Padrão
+                                <input id="minimumStock" type="number" value="5" min="0">
+                            </label>
+
+                            <label class="field-group">
+                                Unidade de Medida Padrão
+                                <select id="defaultUnit">
+                                    <option>Unidades</option>
+                                    <option>Caixas</option>
+                                    <option>Pacotes</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="setting-line compact">
+                            <div>
+                                <strong>Permitir Estoque Negativo</strong>
+                                <small>Permitir vendas mesmo quando não há estoque disponível</small>
+                            </div>
+                            <button type="button" class="toggle" aria-pressed="false"></button>
+                        </div>
+
+                        <div class="setting-line compact">
+                            <div>
+                                <strong>Ativar Validade de Produtos</strong>
+                                <small>Controlar datas de validade dos produtos</small>
+                            </div>
+                            <button type="button" class="toggle" aria-pressed="false"></button>
+                        </div>
+
+                        <div class="setting-line compact">
+                            <div>
+                                <strong>Ativar Controle de Lotes</strong>
+                                <small>Rastrear produtos por números de lote ou série</small>
+                            </div>
+                            <button type="button" class="toggle active" aria-pressed="true"></button>
+                        </div>
+                    </article>
+
+                    <article class="settings-panel">
+                        <header class="panel-header">
+                            <span class="panel-icon">✉</span>
+                            <h3>Notificações por E-mail</h3>
+                        </header>
+
+                        <div class="setting-line">
+                            <div>
+                                <strong>Notificar Estoque Baixo</strong>
+                                <small>Enviar e-mail quando os produtos atingirem níveis mínimos</small>
+                            </div>
+                            <button type="button" class="toggle active" aria-pressed="true"></button>
+                        </div>
+
+                        <label class="field-group email-entry">
+                            E-mails para Notificação
+                            <span>
+                                <input id="notificationEmail" type="email" placeholder="Adicionar e-mail">
+                                <button type="button" id="addEmailBtn">+</button>
+                            </span>
+                        </label>
+
+                        <div class="email-list" id="emailList">
+                            <div class="email-chip">
+                                estoque@empresa.com
+                                <button type="button" aria-label="Remover e-mail">×</button>
+                            </div>
+                            <div class="email-chip">
+                                contato@manuellapedrotti.com
+                                <button type="button" aria-label="Remover e-mail">×</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-line compact">
+                            <div>
+                                <strong>Notificar Movimentações Críticas</strong>
+                                <small>Enviar e-mail para grandes movimentações de estoque</small>
+                            </div>
+                            <button type="button" class="toggle" aria-pressed="false"></button>
+                        </div>
+                    </article>
+
+                </div>
+
+                <aside class="settings-side">
+
+                    <article class="settings-panel profile-panel">
+                        <header class="panel-header">
+                            <span class="panel-icon">👤</span>
+                            <h3>Perfil do Usuário</h3>
+                        </header>
+
+                        <div class="profile-photo">
+                            <div class="avatar">MP</div>
+                            <button type="button" id="changePhotoBtn">✎</button>
+                        </div>
+
+                        <strong class="profile-name">Manuella Pedrotti</strong>
+                        <small class="profile-email">manuella@email.com</small>
+
+                        <div class="settings-grid profile-grid">
+                            <label class="field-group">
+                                Nome
+                                <input id="firstName" type="text" value="Manuella">
+                            </label>
+
+                            <label class="field-group">
+                                Sobrenome
+                                <input id="lastName" type="text" value="Pedrotti">
+                            </label>
+
+                            <label class="field-group full-width">
+                                E-mail
+                                <input id="userEmail" type="email" value="manuella@email.com">
+                            </label>
+
+                            <label class="field-group full-width password-field">
+                                Senha
+                                <span>
+                                    <input id="userPassword" type="password" value="12345678">
+                                    <button type="button" id="togglePassword">👁</button>
+                                </span>
+                            </label>
+
+                            <label class="field-group full-width">
+                                Nível de Acesso
+                                <select id="accessLevel">
+                                    <option>Administradora</option>
+                                    <option>Gestora</option>
+                                    <option>Operadora</option>
+                                </select>
+                            </label>
+                        </div>
+                    </article>
+
+                    <article class="settings-panel system-info">
+                        <header class="panel-header">
+                            <span class="panel-icon">ℹ</span>
+                            <h3>Informações do Sistema</h3>
+                        </header>
+
+                        <dl>
+                            <dt>Versão</dt>
+                            <dd>BuyFlow v1.0.0</dd>
+
+                            <dt>Última Atualização</dt>
+                            <dd>16/06/2026</dd>
+
+                            <dt>Licença</dt>
+                            <dd>Licença Empresarial</dd>
+
+                            <dt>Status</dt>
+                            <dd class="success-status">Sistema Atualizado</dd>
+
+                            <dt>Último Backup</dt>
+                            <dd id="lastBackup">16/06/2026 15:30</dd>
+                        </dl>
+
+                        <button type="button" class="backup-button" id="backupNow">
+                            Fazer Backup Agora
+                        </button>
+                    </article>
+
+                </aside>
+
+            </div>
 
         </section>
 
