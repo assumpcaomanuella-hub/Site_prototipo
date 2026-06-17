@@ -1068,7 +1068,7 @@ function checkStock(){
         const stock =
         Number(row.dataset.stock || 0);
 
-        if(stock <= 0){
+        if(stock <= 0 || row.dataset.productStatus === "inactive"){
             status.textContent = "Inativo";
             status.className = "inventory-status inactive";
         }
@@ -1508,6 +1508,685 @@ document.addEventListener(
     }
 
 });
+
+/* ===========================
+   PRODUTOS FUNCIONAIS
+=========================== */
+
+function resetProductActionButtons(){
+
+    document
+    .querySelectorAll("#inventoryBody .edit-btn, #inventoryBody .delete-btn")
+    .forEach(button => {
+
+        const cleanButton =
+        button.cloneNode(true);
+
+        button.replaceWith(cleanButton);
+
+    });
+
+}
+
+function replaceProductControl(id){
+
+    const element =
+    document.getElementById(id);
+
+    if(!element)
+        return null;
+
+    const cleanElement =
+    element.cloneNode(true);
+
+    element.replaceWith(cleanElement);
+
+    return cleanElement;
+
+}
+
+const productModal =
+document.getElementById("productModal");
+
+const productModalTitle =
+document.getElementById("modalTitle");
+
+const productSaveButton =
+replaceProductControl("saveProduct");
+
+const productCancelButton =
+replaceProductControl("cancelProduct");
+
+const productCloseButton =
+replaceProductControl("closeModal");
+
+const productAddButton =
+document.getElementById("addProductButton");
+
+const productStatusButton =
+document.getElementById("productStatus");
+
+const productImageInput =
+document.getElementById("productImage");
+
+const productImagePreview =
+document.getElementById("productImagePreview");
+
+let activeProductRow = null;
+let activeProductImage = "";
+
+resetProductActionButtons();
+
+function productInput(id){
+
+    return document.getElementById(id);
+
+}
+
+function productValue(id){
+
+    return productInput(id)?.value.trim() || "";
+
+}
+
+function setProductValue(id,value){
+
+    const input =
+    productInput(id);
+
+    if(input)
+        input.value = value || "";
+
+}
+
+function productCurrencyToNumber(value){
+
+    return Number(
+        String(value || "")
+        .replace(/[^\d,.-]/g,"")
+        .replace(".","")
+        .replace(",",".")
+    ) || 0;
+
+}
+
+function productMoney(value){
+
+    return Number(value || 0)
+    .toLocaleString(
+        "pt-BR",
+        {
+            style:"currency",
+            currency:"BRL"
+        }
+    );
+
+}
+
+function nextProductCode(){
+
+    const numbers =
+    [
+        ...document.querySelectorAll("#inventoryBody tr td:nth-child(2)")
+    ]
+    .map(cell =>
+        Number(cell.textContent.replace(/\D/g,""))
+    )
+    .filter(Boolean);
+
+    const next =
+    Math.max(0,...numbers) + 1;
+
+    return `PRD-${String(next).padStart(3,"0")}`;
+
+}
+
+function resetProductForm(){
+
+    [
+        "productName",
+        "productDescription",
+        "productCost",
+        "productPrice",
+        "productStock",
+        "productMinimumStock",
+        "productBarcode",
+        "productLocation",
+        "productWeight",
+        "productDimensions",
+        "productExpiration"
+    ].forEach(id =>
+        setProductValue(id,"")
+    );
+
+    setProductValue("productCategory","");
+    setProductValue("productSupplier","Casa Prado");
+    setProductValue("productCode",nextProductCode());
+
+    activeProductImage = "";
+
+    if(productImageInput)
+        productImageInput.value = "";
+
+    if(productImagePreview)
+        productImagePreview.innerHTML = "▣";
+
+    if(productStatusButton){
+        productStatusButton.classList.add("active");
+        productStatusButton.setAttribute("aria-pressed","true");
+    }
+
+}
+
+function productFromRow(row){
+
+    const cells =
+    row.querySelectorAll("td");
+
+    return {
+        name:cells[0]?.querySelector("strong")?.textContent.trim() || "",
+        code:cells[1]?.textContent.trim() || "",
+        description:cells[2]?.textContent.trim() || "",
+        supplier:cells[3]?.textContent.trim() || "",
+        category:cells[4]?.textContent.trim() || "",
+        price:productCurrencyToNumber(cells[5]?.textContent),
+        stock:Number(row.dataset.stock || 0),
+        minimumStock:row.dataset.minimumStock || "",
+        cost:row.dataset.cost || "",
+        barcode:row.dataset.barcode || "",
+        location:row.dataset.location || "",
+        weight:row.dataset.weight || "",
+        dimensions:row.dataset.dimensions || "",
+        expiration:row.dataset.expiration || "",
+        active:!cells[6]?.querySelector(".inventory-status")?.classList.contains("inactive"),
+        image:row.dataset.image || ""
+    };
+
+}
+
+function fillProductForm(product){
+
+    setProductValue("productName",product.name);
+    setProductValue("productCode",product.code);
+    setProductValue("productDescription",product.description);
+    setProductValue("productSupplier",product.supplier || "Casa Prado");
+    setProductValue("productCategory",product.category);
+    setProductValue("productPrice",product.price);
+    setProductValue("productStock",product.stock);
+    setProductValue("productMinimumStock",product.minimumStock);
+    setProductValue("productCost",product.cost);
+    setProductValue("productBarcode",product.barcode);
+    setProductValue("productLocation",product.location);
+    setProductValue("productWeight",product.weight);
+    setProductValue("productDimensions",product.dimensions);
+    setProductValue("productExpiration",product.expiration);
+
+    activeProductImage =
+    product.image || "";
+
+    if(productImagePreview){
+        productImagePreview.innerHTML = activeProductImage
+        ? `<img src="${activeProductImage}" alt="">`
+        : "▣";
+    }
+
+    if(productStatusButton){
+        productStatusButton.classList.toggle("active",product.active);
+        productStatusButton.setAttribute(
+            "aria-pressed",
+            product.active ? "true" : "false"
+        );
+    }
+
+}
+
+function openProductWindow(row = null){
+
+    activeProductRow = row;
+    resetProductForm();
+
+    if(row){
+        fillProductForm(productFromRow(row));
+    }
+
+    if(productModalTitle){
+        productModalTitle.textContent =
+        row ? "Editar Produto" : "Adicionar Novo Produto";
+    }
+
+    if(productModal)
+        productModal.style.display = "flex";
+
+    productInput("productName")?.focus();
+
+}
+
+function closeProductWindow(){
+
+    if(productModal)
+        productModal.style.display = "none";
+
+    activeProductRow = null;
+
+}
+
+function productDataFromForm(){
+
+    return {
+        name:productValue("productName"),
+        code:productValue("productCode") || nextProductCode(),
+        description:productValue("productDescription") || "Sem descrição",
+        supplier:productValue("productSupplier") || "Casa Prado",
+        category:productValue("productCategory"),
+        cost:Number(productValue("productCost") || 0),
+        price:Number(productValue("productPrice") || 0),
+        stock:Number(productValue("productStock") || 0),
+        minimumStock:Number(productValue("productMinimumStock") || 0),
+        barcode:productValue("productBarcode"),
+        location:productValue("productLocation"),
+        weight:productValue("productWeight"),
+        dimensions:productValue("productDimensions"),
+        expiration:productValue("productExpiration"),
+        active:productStatusButton
+        ? productStatusButton.classList.contains("active")
+        : true,
+        image:activeProductImage
+    };
+
+}
+
+function renderProductRow(product,row = document.createElement("tr")){
+
+    row.dataset.stock = product.stock;
+    row.dataset.minimumStock = product.minimumStock;
+    row.dataset.cost = product.cost;
+    row.dataset.barcode = product.barcode;
+    row.dataset.location = product.location;
+    row.dataset.weight = product.weight;
+    row.dataset.dimensions = product.dimensions;
+    row.dataset.expiration = product.expiration;
+    row.dataset.image = product.image;
+    row.dataset.productStatus =
+    product.active ? "active" : "inactive";
+
+    const isActive =
+    product.active && product.stock > 0;
+
+    const productIcon =
+    product.image
+    ? `<img src="${product.image}" alt="">`
+    : "▣";
+
+    row.innerHTML = `
+        <td>
+            <div class="inventory-product">
+                <span class="product-icon">${productIcon}</span>
+                <strong>${product.name}</strong>
+            </div>
+        </td>
+        <td>${product.code}</td>
+        <td>${product.description}</td>
+        <td>${product.supplier}</td>
+        <td>${product.category}</td>
+        <td>${productMoney(product.price)}</td>
+        <td><span class="inventory-status ${isActive ? "active" : "inactive"}">${isActive ? "Ativo" : "Inativo"}</span></td>
+        <td>
+            <div class="table-actions">
+                <button type="button" class="edit-btn" title="Editar produto">✎</button>
+                <button type="button" class="delete-btn" title="Excluir produto">🗑</button>
+            </div>
+        </td>
+    `;
+
+    return row;
+
+}
+
+function saveProductWindow(){
+
+    const product =
+    productDataFromForm();
+
+    if(!product.name || !product.category || !product.price){
+        showToast("Preencha nome, categoria e preço de venda.");
+        return;
+    }
+
+    if(activeProductRow){
+        renderProductRow(product,activeProductRow);
+        showToast("Produto atualizado.");
+    }
+    else{
+        inventoryBody.appendChild(
+            renderProductRow(product)
+        );
+
+        showToast("Produto cadastrado com sucesso.");
+    }
+
+    resetProductActionButtons();
+    updateTotalProducts();
+    checkStock();
+    filterInventory();
+    closeProductWindow();
+
+}
+
+function exportProductCsv(){
+
+    const header =
+    [
+        "Produto",
+        "Código",
+        "Descrição",
+        "Fornecedor",
+        "Categoria",
+        "Valor",
+        "Estoque",
+        "Status"
+    ];
+
+    const csvRows =
+    [header].concat(
+        getInventoryRows().map(row => {
+
+            const cells =
+            row.querySelectorAll("td");
+
+            return [
+                cells[0]?.querySelector("strong")?.textContent.trim() || "",
+                cells[1]?.textContent.trim() || "",
+                cells[2]?.textContent.trim() || "",
+                cells[3]?.textContent.trim() || "",
+                cells[4]?.textContent.trim() || "",
+                cells[5]?.textContent.trim() || "",
+                row.dataset.stock || "0",
+                cells[6]?.textContent.trim() || ""
+            ];
+
+        })
+    );
+
+    const csv =
+    csvRows
+    .map(row =>
+        row.map(value =>
+            `"${String(value).replace(/"/g,'""')}"`
+        ).join(";")
+    )
+    .join("\n");
+
+    const blob =
+    new Blob([csv],{type:"text/csv;charset=utf-8"});
+
+    const link =
+    document.createElement("a");
+
+    link.href =
+    URL.createObjectURL(blob);
+
+    link.download =
+    "produtos-buyflow.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+    showToast("Produtos exportados.");
+
+}
+
+function importProductCsv(){
+
+    const input =
+    document.createElement("input");
+
+    input.type = "file";
+    input.accept = ".csv,text/csv";
+
+    input.addEventListener("change", () => {
+
+        const file =
+        input.files?.[0];
+
+        if(!file)
+            return;
+
+        const reader =
+        new FileReader();
+
+        reader.addEventListener("load", () => {
+
+            String(reader.result || "")
+            .split(/\r?\n/)
+            .filter(Boolean)
+            .slice(1)
+            .forEach(line => {
+
+                const values =
+                line
+                .split(";")
+                .map(value =>
+                    value.replace(/^"|"$/g,"").replace(/""/g,'"')
+                );
+
+                if(!values[0])
+                    return;
+
+                inventoryBody.appendChild(
+                    renderProductRow({
+                        name:values[0],
+                        code:values[1] || nextProductCode(),
+                        description:values[2] || "Sem descrição",
+                        supplier:values[3] || "Casa Prado",
+                        category:values[4] || "Sem categoria",
+                        price:productCurrencyToNumber(values[5]),
+                        stock:Number(values[6] || 0),
+                        minimumStock:5,
+                        cost:0,
+                        barcode:"",
+                        location:"",
+                        weight:"",
+                        dimensions:"",
+                        expiration:"",
+                        active:values[7] !== "Inativo",
+                        image:""
+                    })
+                );
+
+            });
+
+            resetProductActionButtons();
+            updateTotalProducts();
+            checkStock();
+            filterInventory();
+            showToast("Produtos importados.");
+
+        });
+
+        reader.readAsText(file);
+
+    });
+
+    input.click();
+
+}
+
+productAddButton?.addEventListener(
+"click",
+() => openProductWindow()
+);
+
+productSaveButton?.addEventListener(
+"click",
+saveProductWindow
+);
+
+productCancelButton?.addEventListener(
+"click",
+closeProductWindow
+);
+
+productCloseButton?.addEventListener(
+"click",
+closeProductWindow
+);
+
+productStatusButton?.addEventListener(
+"click",
+() => {
+
+    productStatusButton.classList.toggle("active");
+    productStatusButton.setAttribute(
+        "aria-pressed",
+        productStatusButton.classList.contains("active") ? "true" : "false"
+    );
+
+}
+);
+
+document
+.getElementById("generateProductCode")
+?.addEventListener(
+"click",
+() => setProductValue("productCode",nextProductCode())
+);
+
+document
+.getElementById("generateBarcode")
+?.addEventListener(
+"click",
+() => setProductValue("productBarcode",String(Date.now()).slice(-12))
+);
+
+productImageInput?.addEventListener(
+"change",
+() => {
+
+    const file =
+    productImageInput.files?.[0];
+
+    if(!file)
+        return;
+
+    const reader =
+    new FileReader();
+
+    reader.addEventListener("load", () => {
+
+        activeProductImage =
+        String(reader.result || "");
+
+        if(productImagePreview){
+            productImagePreview.innerHTML =
+            `<img src="${activeProductImage}" alt="">`;
+        }
+
+    });
+
+    reader.readAsDataURL(file);
+
+}
+);
+
+document
+.querySelector(".image-dropzone")
+?.addEventListener(
+"dragover",
+event => {
+    event.preventDefault();
+    event.currentTarget.classList.add("dragging");
+}
+);
+
+document
+.querySelector(".image-dropzone")
+?.addEventListener(
+"dragleave",
+event => {
+    event.currentTarget.classList.remove("dragging");
+}
+);
+
+document
+.querySelector(".image-dropzone")
+?.addEventListener(
+"drop",
+event => {
+
+    event.preventDefault();
+    event.currentTarget.classList.remove("dragging");
+
+    if(productImageInput && event.dataTransfer.files.length){
+        productImageInput.files = event.dataTransfer.files;
+        productImageInput.dispatchEvent(new Event("change"));
+    }
+
+}
+);
+
+inventoryBody?.addEventListener(
+"click",
+event => {
+
+    const button =
+    event.target.closest("button");
+
+    if(!button)
+        return;
+
+    const row =
+    button.closest("tr");
+
+    if(button.classList.contains("edit-btn")){
+        openProductWindow(row);
+    }
+
+    if(button.classList.contains("delete-btn")){
+        row.remove();
+        updateTotalProducts();
+        checkStock();
+        filterInventory();
+        showToast("Produto removido.");
+    }
+
+}
+);
+
+document
+.getElementById("exportProducts")
+?.addEventListener(
+"click",
+exportProductCsv
+);
+
+document
+.getElementById("importProducts")
+?.addEventListener(
+"click",
+importProductCsv
+);
+
+window.addEventListener(
+"click",
+event => {
+
+    if(event.target === productModal){
+        closeProductWindow();
+    }
+
+}
+);
+
+document.addEventListener(
+"keydown",
+event => {
+
+    if(event.key === "Escape"){
+        closeProductWindow();
+    }
+
+}
+);
 
 const logoutBtn =
 document.getElementById(

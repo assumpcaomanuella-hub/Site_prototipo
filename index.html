@@ -533,54 +533,132 @@
 
             <div id="productModal" class="modal">
 
-                <div class="modal-content">
+                <div class="modal-content product-modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 
                     <input
                         type="hidden"
                         id="editingRow">
 
-                    <h2 id="modalTitle">
-                        Novo Produto
-                    </h2>
+                    <div class="product-modal-header">
+                        <h2 id="modalTitle">Adicionar Novo Produto</h2>
+                        <button type="button" id="closeModal" aria-label="Fechar janela">×</button>
+                    </div>
 
-                    <button id="closeModal">
-                        ✖
-                    </button>
+                    <div class="product-form">
+                        <div class="product-form-main">
+                            <label class="image-dropzone" for="productImage">
+                                <span class="image-preview" id="productImagePreview">▣</span>
+                                <strong>Enviar uma imagem</strong>
+                                <small>ou arraste e solte</small>
+                                <em>PNG, JPG, GIF até 5MB</em>
+                                <input id="productImage" type="file" accept="image/png,image/jpeg,image/gif">
+                            </label>
 
-                    <input
-                        id="productName"
-                        type="text"
-                        placeholder="Nome">
+                            <label class="product-field">
+                                Nome do Produto *
+                                <input id="productName" type="text" placeholder="Ex.: Notebook Dell Inspiron 15">
+                            </label>
 
-                    <input
-                        id="productCategory"
-                        type="text"
-                        placeholder="Categoria">
+                            <label class="product-field with-action">
+                                Código do Produto *
+                                <span>
+                                    <input id="productCode" type="text" placeholder="Ex.: PRD-001">
+                                    <button type="button" id="generateProductCode" title="Gerar código">↻</button>
+                                </span>
+                            </label>
 
-                    <input
-                        id="productDescription"
-                        type="text"
-                        placeholder="Descrição">
+                            <label class="product-field">
+                                Descrição
+                                <textarea id="productDescription" placeholder="Descreva detalhes sobre o produto"></textarea>
+                            </label>
+                        </div>
 
-                    <input
-                        id="productSupplier"
-                        type="text"
-                        value="Casa Prado"
-                        placeholder="Fornecedor">
+                        <div class="product-form-side">
+                            <label class="product-field">
+                                Categoria *
+                                <select id="productCategory">
+                                    <option value="">Selecione</option>
+                                    <option>Jaquetas</option>
+                                    <option>Camisetas Polo</option>
+                                    <option>Calças Jeans</option>
+                                    <option>Camisas Sociais</option>
+                                    <option>Blazers</option>
+                                    <option>Bermudas</option>
+                                    <option>Suéteres</option>
+                                </select>
+                            </label>
 
-                    <input
-                        id="productPrice"
-                        type="number"
-                        placeholder="Preço">
+                            <label class="product-field">
+                                Fornecedor
+                                <input id="productSupplier" type="text" value="Casa Prado" placeholder="Fornecedor">
+                            </label>
 
-                    <input
-                        id="productStock"
-                        type="number"
-                        placeholder="Quantidade">
+                            <label class="product-field">
+                                Preço de Custo *
+                                <input id="productCost" type="number" min="0" step="0.01" placeholder="R$ 0,00">
+                            </label>
 
-                    <button id="saveProduct">
-                        Salvar
-                    </button>
+                            <label class="product-field">
+                                Preço de Venda *
+                                <input id="productPrice" type="number" min="0" step="0.01" placeholder="R$ 0,00">
+                            </label>
+
+                            <label class="product-field">
+                                Quantidade
+                                <input id="productStock" type="number" min="0" step="1" placeholder="0">
+                            </label>
+
+                            <label class="product-field">
+                                Quantidade mínima
+                                <input id="productMinimumStock" type="number" min="0" step="1" placeholder="0">
+                            </label>
+
+                            <label class="product-field with-action">
+                                Código de Barras
+                                <span>
+                                    <input id="productBarcode" type="text" placeholder="Digite ou escaneie">
+                                    <button type="button" id="generateBarcode" title="Gerar código de barras">↻</button>
+                                </span>
+                            </label>
+
+                            <label class="product-field">
+                                Localização no Estoque
+                                <input id="productLocation" type="text" placeholder="Ex.: Prateleira A3, Caixa 5">
+                            </label>
+
+                            <label class="product-toggle-field">
+                                Status
+                                <span>
+                                    <button type="button" class="product-toggle active" id="productStatus" aria-pressed="true"></button>
+                                    Ativo
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="product-extra">
+                            <h3><span>!</span> Inventário de produtos</h3>
+
+                            <label class="product-field">
+                                Peso (kg)
+                                <input id="productWeight" type="number" min="0" step="0.01" placeholder="0,00">
+                            </label>
+
+                            <label class="product-field">
+                                Dimensões (cm)
+                                <input id="productDimensions" type="text" placeholder="L x A x C">
+                            </label>
+
+                            <label class="product-field">
+                                Data de Validade
+                                <input id="productExpiration" type="date">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="product-modal-actions">
+                        <button type="button" class="light-action" id="cancelProduct">Cancelar</button>
+                        <button type="button" class="dark-action" id="saveProduct">Salvar produto</button>
+                    </div>
 
                 </div>
 
